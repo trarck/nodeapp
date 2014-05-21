@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map id="101" base_tile="1">
+       <ground>22587:104:::,23483::::208,23484::::208,23485::::208,23486::::208,23487::::208,23488::::208,23489::::208,23490::::208,23491::::208,23492::::208,23493::::208,23494::::208,23495::::208,23496::::208,23497::::208,23498::::208,23499::::208,23500::::208,23501::::208,23502::::208,23503::::208,23504::::208,23505::::208,23506::::208,23663::::208,23664::::208,23665::::208,23666::::208,23667::::208,23668::::208,23669::::208,23670::::208,23671::::208,23672::::208,23673::::208,23674::::208,23675::::208,23676::::208,23677::::208,23678::::208,23679::::208,23680::::208,23681::::208,23682::::208,23683::::208,23684::::208,23685::::208,23686::::208,23843::::208,23844::::208,23845::::208,23846::::208,23847::::208,23848::::208,23849::::208,23850::::208,23851::::208,23852::::208,23853::::208,23854::::208,23855::::208,23856::::208,23857::::208,23858::::208,23859::::208,23860::::208,23861::::208,23862::::208,23863::::208,23864::::208,23865::::208,23866::::208,24023::::208,24024::::208,24025::::208,24026::::208,24027::::208,24028::::208,24029::::208,24030::::208,24031::::208,24032::::208,24033::::208,24034::::208,24035::::208,24036::::208,24037::::208,24038::::208,24039::::208,24040::::208,24041::::208,24042::::208,24043::::208,24044::::208,24045::::208,24046::::208,24059:131:::,24061:130:::,24063:129:::,24203::::208,24204::::208,24205::::208,24206::::208,24207::::208,24208::::208,24209::::208,24210::::208,24211::::208,24212::::208,24213::::208,24214::::208,24215::::208,24216::::208,24217::::208,24218::::208,24219::::208,24220::::208,24221::::208,24222::::208,24223::::208,24224::::208,24225::::208,24226::::208,24363:122:::,24369:122:::,24375:122:::,24381:130:::,24383:130:::208,24384::::208,24385:130:::208,24386::::208,24387:130:::208,24388::::219,24389:130:::214,24390::::214,24391:130:::214,24392::::214,24393:130:::214,24394::::214,24395:130:::214,24396::::214,24397:130:::214,24398::::214,24399:129:::214,24400::::220,24401::::208,24402::::208,24403::::208,24404::::208,24405::::208,24406::::208,24411:131:::,24413:130:::,24415:130:::,24417:130:::,24419:137:::,24421:141:::,24423:138:::,24425:130:::,24427:129:::,24563::::208,24564::::208,24565::::208,24566::::208,24567::::208,24568::::216,24580::::212,24581::::208,24582::::208,24583::::208,24584::::208,24585::::208,24586::::208,24741:141:::,24743:141:::208,24744::::208,24745:141:::208,24746::::208,24747:141:::208,24748::::216,24749:141:::,24751:141:::,24753:141:::,24755:141:::,24757:141:::,24759:138:::,24760::::212,24761:130:::208,24762::::208,24763:130:::208,24764::::208,24765:130:::208,24766::::208,24767:130:::,24769:130:::,24771:137:::,24773:141:::,24775:141:::,24777:141:::,24779:141:::,24781:141:::,24783:141:::,24785:141:::,24787:136:::,24923::::208,24924::::208,24925::::208,24926::::208,24927::::208,24928::::216,24940::::212,24941::::208,24942::::208,24943::::208,24944::::208,24945::::208,24946::::208,25101:140:::,25103:141:::208,25104::::208,25105:141:::208,25106::::208,25107:141:::208,25108::::216,25109:141:::,25111:141:::,25113:141:::,25115:141:::,25117:141:::,25119:141:::,25120::::212,25121:141:::208,25122::::208,25123:141:::208,25124::::208,25125:141:::208,25126::::208,25127:141:::,25129:141:::,25131:141:::,25133:139:::,25135:134:::,25137:140:::,25139:141:::,25141:141:::,25143:141:::,25145:141:::,25147:136:::,25283::::208,25284::::208,25285::::208,25286::::208,25287::::208,25288::::216,25300::::212,25301::::208,25302::::208,25303::::208,25304::::208,25305::::208,25306::::208,25461:133:::,25463:134:::208,25464::::208,25465:134:::208,25466::::208,25467:140:::208,25468::::216,25469:141:::,25471:141:::,25473:141:::,25475:141:::,25477:141:::,25479:141:::,25480::::212,25481:141:::208,25482::::208,25483:141:::208,25484::::208,25485:141:::208,25486::::208,25487:139:::,25489:134:::,25491:134:::,25493:135:::,25497:133:::,25499:140:::,25501:141:::,25503:141:::,25505:139:::,25507:135:::,25643::::208,25644::::208,25645::::208,25646::::208,25647::::208,25648::::218,25649::::209,25660::::212,25661::::208,25662::::208,25663::::208,25664::::208,25665::::208,25666::::208,25823::::208,25824::::208,25825::::208,25826::::208,25827:133:::208,25828::::208,25829:134:::218,25830::::210,25831:134:::209,25833:134:::,25835:134:::,25837:134:::,25839:134:::,25840::::212,25841:134:::208,25842::::208,25843:134:::208,25844::::208,25845:134:::208,25846::::208,25847:135:::,25859:133:::,25861:134:::,25863:134:::,25865:135:::,26003::::208,26004::::208,26005::::208,26006::::208,26007::::208,26008::::208,26009::::208,26010::::208,26011::::216,26020::::212,26021::::208,26022::::208,26023::::208,26024::::208,26025::::208,26026::::208,26183::::208,26184::::208,26185::::208,26186::::208,26187::::208,26188::::208,26189::::208,26190::::208,26191::::216,26199:102:::,26200::::213,26201::::220,26202::::208,26203::::208,26204::::208,26205::::208,26206::::208,26363::::208,26364::::208,26365::::208,26366::::208,26367::::208,26368::::208,26369::::208,26370::::208,26371::::216,26381::::212,26382::::208,26383::::208,26384::::208,26385::::208,26386::::208,26543::::208,26544::::208,26545::::208,26546::::208,26547::::208,26548::::208,26549::::208,26550::::208,26551::::218,26552::::210,26553::::210,26554::::210,26555::::209,26561::::212,26562::::208,26563::::208,26564::::208,26565::::208,26566::::208,26723::::208,26724::::208,26725::::208,26726::::208,26727::::208,26728::::208,26729::::208,26730::::208,26731::::208,26732::::208,26733::::208,26734::::208,26735::::216,26741::::212,26742::::208,26743::::208,26744::::208,26745::::208,26746::::208,26903::::208,26904::::208,26905::::208,26906::::208,26907::::208,26908::::208,26909::::208,26910::::208,26911::::208,26912::::208,26913::::208,26914::::208,26915::::216,26921::::212,26922::::208,26923::::208,26924::::208,26925::::208,26926::::208,27083::::208,27084::::208,27085::::208,27086::::208,27087::::208,27088::::208,27089::::208,27090::::208,27091::::208,27092::::208,27093::::208,27094::::208,27095::::216,27101::::212,27102::::208,27103::::208,27104::::208,27105::::208,27106::::208,27263::::208,27264::::208,27265::::208,27266::::208,27267::::208,27268::::208,27269::::208,27270::::208,27271::::208,27272::::208,27273::::208,27274::::208,27275::::216,27276:265:::,27281::::212,27282:102:::208,27283::::208,27284::::208,27285::::208,27286::::208,27443::::208,27444::::208,27445::::219,27446::::214,27447::::214,27448::::214,27449::::214,27450::::214,27451::::214,27452::::214,27453::::214,27454::::214,27455::::215,27461::::213,27462::::214,27463::::214,27464::::220,27465::::208,27466::::208,27623::::208,27624::::208,27625::::216,27644::::212,27645::::208,27646::::208,27803::::208,27804::::208,27805::::216,27822:102:::,27824::::212,27825::::208,27826::::208,27827::::208,27828::::208,27829::::208,27830::::208,27831::::208,27832::::208,27833::::208,27834::::208,27975:104:::,27983::::208,27984::::208,27985::::216,28004::::212,28005::::208,28006::::208,28007::::208,28008::::208,28009::::208,28010::::208,28011::::208,28012::::208,28013::::208,28014::::208,28163::::208,28164::::208,28165::::216,28184::::212,28185::::208,28186::::208,28187::::208,28188::::208,28189::::208,28190::::208,28191::::208,28192::::208,28193::::208,28194::::208,28343::::208,28344::::208,28345::::216,28356:117:::,28364::::213,28365::::214,28366::::214,28367::::220,28368::::208,28369::::208,28370::::208,28371::::208,28372::::208,28373::::208,28374::::208,28523::::208,28524::::208,28525::::216,28547::::212,28548::::208,28549::::208,28550::::208,28551::::208,28552::::208,28553::::208,28554::::208,28703::::208,28704::::208,28705::::216,28727::::212,28728::::208,28729::::208,28730::::208,28731::::208,28732::::208,28733::::208,28734::::208,28883::::208,28884::::208,28885::::216,28907::::212,28908::::208,28909::::208,28910::::208,28911::::208,28912::::208,28913::::208,28914::::208,29063::::208,29064::::208,29065::::216,29070:102:::,29087::::212,29088::::208,29089::::208,29090::::208,29091::::208,29092::::208,29093::::208,29094::::208,29243::::208,29244::::208,29245::::216,29267::::212,29268::::208,29269::::208,29270::::208,29271::::208,29272::::208,29273::::208,29274:102:::208,29423::::208,29424::::208,29425::::216,29436:117:::,29447::::212,29448::::208,29449::::208,29450::::208,29451::::208,29452::::208,29453::::208,29454::::208,29603::::208,29604::::208,29605::::216,29627::::212,29628::::208,29629::::208,29630::::208,29631::::208,29632::::208,29633::::208,29634::::208,29783::::208,29784::::208,29785::::216,29807::::212,29808::::208,29809::::208,29810::::208,29811::::208,29812::::208,29813::::208,29814::::208,29963::::208,29964::::208,29965::::216,29986:101:::,29987::::212,29988::::208,29989::::208,29990::::208,29991::::208,29992::::208,29993::::208,29994::::208,30143::::208,30144::::208,30145::::216,30167::::212,30168::::208,30169::::208,30170::::208,30171::::208,30172::::208,30173::::208,30174::::208,30323::::208,30324::::208,30325::::216,30347::::212,30348::::208,30349::::208,30350::::208,30351::::208,30352::::208,30353::::208,30354::::208,30503::::208,30504::::208,30505::::218,30506::::210,30507::::210,30508::::210,30509::::210,30510::::210,30511::::216,30516:117:::,30527::::212,30528::::208,30529::::208,30530::::208,30531::::208,30532::::208,30533::::208,30534::::208,30691::::216,30707::::212,30708::::208,30709::::208,30710::::208,30711::::208,30712::::208,30713::::208,30714::::208,30871::::216,30887::::212,30888::::208,30889::::208,30890::::208,30891::::208,30892::::208,30893::::208,30894::::208,31051::::218,31052::::210,31053::::209,31067::::212,31068::::208,31069::::208,31070::::208,31071::::208,31072::::208,31073::::208,31074::::208,31081:103:::,31231::::208,31232::::208,31233::::216,31247::::212,31248::::208,31249::::208,31250::::208,31251::::208,31252::::208,31253::::208,31254::::208,31411::::208,31412::::208,31413::::216,31427::::212,31428::::208,31429::::208,31430::::208,31431::::208,31432::::208,31433::::208,31434::::208,31591::::208,31592::::208,31593::::216,31596:117:::,31605::::211,31606::::210,31607::::217,31608::::208,31609::::208,31610::::208,31611::::208,31612::::208,31613::::208,31614::::208,31771::::208,31772::::208,31773::::216,31785::::212,31786::::208,31787::::208,31788::::208,31789::::208,31790::::208,31791::::208,31792::::208,31793::::208,31794::::208,31951::::208,31952::::208,31953::::216,31965::::212,31966::::208,31967::::208,31968::::208,31969::::208,31970::::208,31971::::208,31972::::208,31973::::208,31974::::208,32131::::208,32132::::208,32133::::216,32143::::211,32144::::210,32145::::217,32146::::208,32306:101:::,32311::::208,32312::::208,32313::::216,32323::::212,32324::::208,32325::::208,32326::::208,32491::::208,32492::::208,32493::::218,32494::::210,32495::::210,32496::::210,32497::::210,32498::::210,32499::::210,32500::::210,32501::::210,32502::::210,32503::::217,32504::::208,32505::::208,32506::::208,32671::::208,32672::::208,32673::::208,32674::::208,32675::::208,32676::::208,32677:117:::208,32678::::208,32679::::208,32680::::208,32681::::208,32682::::208,32683::::208,32684::::208,32685::::208,32686::::208,32851::::208,32852::::208,32853::::208,32854::::208,32855::::208,32856::::208,32857::::208,32858::::208,32859::::208,32860::::208,32861::::208,32862::::208,32863::::208,32864::::208,32865::::208,32866::::208,32871:102:::,33031::::208,33032::::208,33033::::208,33034::::208,33035::::208,33036::::208,33037::::208,33038::::208,33039::::208,33040::::208,33041::::208,33042::::208,33043::::208,33044::::208,33045::::208,33046::::208,33211::::208,33212::::208,33213::::208,33214::::208,33215::::208,33216::::208,33217::::208,33218::::208,33219::::208,33220::::208,33221::::208,33222::::208,33223::::208,33224::::208,33225::::208,33226::::208,33391::::208,33392::::208,33393::::208,33394::::208,33395::::208,33396::::208,33397::::208,33398::::208,33399::::208,33400::::208,33401::::208,33402::::208,33403::::208,33404::::208,33405::::208,33406::::208,33750:116:::,33756:121:::,</ground>
+       <decoration>8:454:30520:0:run_script_ruth_walk1:1:1::29673|29674|29675,14:32:24409:0::0:0::,15:32:25851:0::0:0::,19:33:22795:0::0:0::,22:519:31055:0:axe|run_script_log101_script:1:1::,35:9:24031:0::0:0::,37:10:22953:0::0:0::,38:10:29633:0::0:0::,40:11:22961:0::0:0::,41:11:22044:0::0:0::,42:9:21865:0::0:0::,69:11:26757:0::0:0::,70:11:25677:0::0:0::,71:10:28911:0::0:0::,73:32:29468:0::0:0::,74:103:24744:0::0:0::,75:105:25647:0::0:0::,80:409:26209:0::0:0::,85:101:29969:0::1:0::,86:102:29457:0::0:0::,87:102:29816:0::0:0::,103:498:29636:0::0:0::,104:204:31258:0::0:0::,106:11:27803:0::0:0::,109:21:28203:0::0:0::,110:21:31439:0::0:0::,111:11:23692:0::0:0::,112:454:26029:0::0:0::,115:11:27443:0::0:0::,116:11:29421:0::0:0::,118:11:31402:0::0:0::,119:11:34491:0::0:0::,120:11:34493:0::0:0::,121:11:33239:0::0:0::,122:11:33063:0::0:0::,123:11:30728:0::0:0::,124:11:35202:0::0:0::,131:11:26388:0::0:0::,133:11:22052:0::0:0::,137:11:24018:0::0:0::,139:11:22396:0::0:0::,140:11:23301:0::0:0::,143:11:27979:0::0:0::,144:11:24030:0::0:0::,145:11:26366:0::0:0::,146:11:29423:0::0:0::,151:11:22243:0::0:0::,152:11:24224:0::0:0::,153:11:22971:0::0:0::,154:11:22612:0::0:0::,156:11:33251:0::0:0::,157:11:33253:0::0:0::,160:11:35220:0::0:0::,161:11:35767:0::0:0::,163:11:34866:0::0:0::,164:11:36836:0::0:0::,165:11:36473:0::0:0::,166:11:36843:0::0:0::,172:136:32690:0::0:0::,178:137:26005:0::0:0::,179:137:25996:0::0:0::,182:137:25821:0::0:0::,183:137:33788:0::0:0::,184:137:34330:0::0:0::,185:137:33789:0::0:0::,186:137:33969:0::0:0::,187:137:33970:0::0:0::,188:137:36121:0::0:0::,190:137:35382:0::0:0::,191:137:33064:0::0:0::,196:137:22972:0::0:0::,197:137:22970:0::0:0::,198:137:22956:0::0:0::,199:137:23136:0::0:0::,200:137:23316:0::0:0::,201:137:23317:0::0:0::,202:137:23137:0::0:0::,203:137:22957:0::0:0::,204:137:22958:0::0:0::,205:137:24212:0::0:0::,206:137:24213:0::0:0::,207:137:24215:0::0:0::,208:137:23501:0::0:0::,209:137:23138:0::0:0::,210:137:23498:0::0:0::,211:137:24036:0::0:0::,212:137:23319:0::0:0::,213:137:22416:0::0:0::,214:137:22955:0::0:0::,215:137:22222:0::0:0::,216:137:25635:0::0:0::,217:137:25816:0::0:0::,218:137:25456:0::0:0::,219:137:23469:0::0:0::,223:137:25248:0::0:0::,230:71:34852:0::0:0::,231:67:24035:0::0:0::,232:69:33248:0::0:0::,235:513:30517:0::0:0::,236:513:30514:0::0:0::,237:513:30511:0::0:0::,238:513:30508:0::0:0::,241:513:30523:0::0:0::,242:513:30526:0::0:0::,247:442:26195:0:task_thorn:1:1::25467|25468|25469|26195|26015,255:442:26193:0:task_thorn:1:1::25292|25293|25294,258:516:30882:1::1:0::,266:394:28518:0::0:0::,273:524:25654:0::0:0::,277:11:27659:0::0:0::,278:11:30008:0::0:0::,286:10:22979:0::0:0::,327:136:23339:0::0:0::,354:136:22782:0::0:0::,363:136:25001:0::0:0::,369:33:24238:0::0:0::,378:68:24387:0::0:0::,381:101:29622:0::1:0::,384:101:27812:0::0:0::,387:10:27111:0::0:0::,388:10:27832:0::0:0::,389:444:26030:0::0:0::,390:100:27643:0::1:0::,391:100:23866:0::0:0::,395:100:29988:0::0:0::,413:105:24579:0::0:0::,425:11:31038:0::0:0::,426:11:32489:0::0:0::,427:11:31770:0::0:0::,428:11:33032:0::0:0::,429:11:31252:0::0:0::,430:99:32147:0::0:0::,431:99:33033:0::0:0::,432:99:31951:0::0:0::,433:99:33209:0::0:0::,434:99:32495:0::0:0::,435:99:32685:0::0:0::,436:99:32686:0::0:0::,437:99:31409:0::0:0::,463:513:27463:0::0:0::,464:513:28549:0::0:0::,465:513:27466:0::0:0::,466:513:27469:0::0:0::,468:513:27447:0::0:0::,469:513:27456:0::0:0::,470:513:27453:0::0:0::,471:513:27450:0::0:0::,480:101:27451:0::0:0::,481:101:26736:0::1:0::,482:101:27280:0::1:0::,492:469:25653:1::0:0::,493:273:27816:1:conversation_map_150_conv16:1:1::,494:273:31063:0:run_script_ruth_axe:1:1::,498:109:26370:0::0:0::,499:107:26368:0::0:0::,500:111:26728:0::0:0::,501:119:26912:0::0:0::,503:100:29975:0::1:0::,504:99:29616:0::1:0::,506:515:27993:0::0:0::,515:513:27472:0::0:0::,518:513:27444:0::0:0::,519:513:27441:0::0:0::,520:515:28533:0::0:0::,521:515:29433:0::0:0::,522:515:29973:0::0:0::,523:515:30513:0::0:0::,524:531:28169:0::1:1::,525:137:27989:0::1:0::,526:140:27809:0::1:0::,527:139:28176:0::1:0::,528:136:28904:0::1:0::,529:102:28529:0::1:0::,530:101:29430:0::1:0::,532:539:27640:0:run_script_ruth_walk2b:1:1:wood^9#*cart_title*cart_desc**cart_script:26700|26699|26698|26697,534:529:29428:0::1:1::,535:538:26906:1::0:0::,537:402:28715:0:run_script_end_fight:1:1::27918|28093,539:399:29072:0::1:0::,540:523:25833:0:run_script_jesus_bapt:1:1::,541:9:28918:0::0:0::,542:9:28511:0::0:0::,</decoration>
+	<wallblock>24388:1:,24389:1:,24390:1:,24391:1:,24392:1:,24393:1:,24394:1:,24395:1:,24396:1:,24397:1:,24398:1:,24399:1:,24400:1:,24568:1:,24580:1:,24748:1:,24760:1:,24928:1:,24930:1:,24940:1:,25108:1:,25109:1:,25110:1:,25120:1:,25288:1:,25290:1:,25291:1:,25300:1:,25468:1:,25470:1:,25471:1:,25472:1:,25473:1:,25480:1:,25648:1:,25651:1:,25653:1:,25654:1:,25658:1:,25660:1:,25828:1:,25829:1:,25830:1:,25831:1:,25834:1:,25835:1:,25836:1:,25837:1:,25838:1:,25839:1:,25840:1:,26011:1:,26012:2:255,26013:2:255,26014:2:255,26015:2:247,26019:1:,26020:1:,26191:1:,26192:2:247,26193:2:247,26194:2:247,26195:2:247,26200:1:,26201:1:,26371:1:,26381:1:,26551:1:,26552:1:,26553:1:,26554:1:,26555:1:,26561:1:,26735:1:,26741:1:,26915:1:,26921:1:,27095:1:,27101:1:,27275:1:,27281:1:,27445:1:,27446:1:,27447:1:,27448:1:,27449:1:,27450:1:,27451:1:,27452:1:,27453:1:,27454:1:,27455:1:,27456:1:,27457:2:532,27458:2:532,27459:2:532,27460:2:532,27461:1:,27462:1:,27463:1:,27464:1:,27625:1:,27632:1:,27633:1:,27644:1:,27805:1:,27812:1:,27813:1:,27824:1:,27985:1:,27992:1:,27993:1:,28004:1:,28165:1:,28172:1:,28173:1:,28184:1:,28345:1:,28352:1:,28353:1:,28364:1:,28365:1:,28366:1:,28367:1:,28525:1:,28533:1:,28547:1:,28705:1:,28713:2:537,28727:1:,28885:1:,28893:2:537,28907:1:,29065:1:,29073:1:,29087:1:,29245:1:,29253:1:,29267:1:,29425:1:,29432:1:,29433:1:,29447:1:,29605:1:,29612:1:,29613:1:,29627:1:,29785:1:,29792:1:,29793:1:,29807:1:,29965:1:,29972:1:,29973:1:,29987:1:,30145:1:,30152:1:,30153:1:,30167:1:,30325:1:,30332:1:,30333:1:,30347:1:,30505:1:,30506:1:,30507:1:,30508:1:,30509:1:,30510:1:,30511:1:,30512:1:,30513:1:,30514:1:,30515:1:,30516:1:,30517:1:,30518:2:8,30519:2:8,30520:2:8,30521:1:,30522:1:,30523:1:,30524:1:,30525:1:,30526:1:,30527:1:,30691:1:,30707:1:,30871:1:,30887:1:,31051:1:,31052:1:,31053:1:,31067:1:,31233:1:,31247:1:,31413:1:,31427:1:,31593:1:,31605:1:,31606:1:,31607:1:,31773:1:,31785:1:,31953:1:,31965:1:,32133:1:,32143:1:,32144:1:,32145:1:,32313:1:,32323:1:,32493:1:,32494:1:,32495:1:,32496:1:,32497:1:,32498:1:,32499:1:,32500:1:,32501:1:,32502:1:,32503:1:,</wallblock><scripts>
+  <script name="ruth101_start">
+    <action command="gray_covr">
+      <arg name="hide" val="f"/>
+      <arg name="did" val="494"/>
+      <arg name="msgref" val="ruth101_gray"/>
+    </action>
+  </script>
+  <script name="ruth2_hint">
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="46"/>
+      <arg name="msgref" val="ruth2_gray"/>
+    </action>
+  </script>
+  <script name="fire_hint">
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="502"/>
+      <arg name="msgref" val="fire_gray"/>
+    </action>
+  </script>
+  <script name="cold_kids">
+    <action command="set_vis">
+      <arg name="did" val="496"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="497"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="269"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="270"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="269"/>
+      <arg name="label" val="start"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="270"/>
+      <arg name="label" val="start"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="270"/>
+      <arg name="label" val="cold1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="269"/>
+      <arg name="label" val="cold1a"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="125"/>
+      <arg name="label" val="dug1_r"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="sleep">
+      <arg name="ms" val="2000"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="269"/>
+      <arg name="label" val="happy1a"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="270"/>
+      <arg name="label" val="happy1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv9"/>
+    </action>
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv11"/>
+    </action>
+    <action command="sleep">
+      <arg name="ms" val="5000"/>
+    </action>
+    <action command="move_screen">
+      <arg name="tid" val="27820"/>
+    </action>
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="493"/>
+      <arg name="msgref" val="afterfire_gray"/>
+    </action>
+  </script>
+  <script name="ruth_walk3"/>
+  <script name="khloe_test">
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv4"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="267"/>
+      <arg name="label" val="dug1"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="sleep">
+      <arg name="ms" val="2000"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="267"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="536"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="536"/>
+      <arg name="label" val="walk_sad1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="536"/>
+      <arg name="to_tid" val="28535"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="536"/>
+      <arg name="label" val="idle2b"/>
+      <arg name="block" val="f"/>
+    </action>
+  </script>
+  <script name="cart_script" dontuseletterbox="true">
+    <action command="if">
+      <arg name="cond" val="1101_dial4"/>
+      <action command="sleep">
+        <arg name="ms" val="100"/>
+      </action>
+    </action>
+    <action command="if">
+      <arg name="cond" val=""/>
+      <action command="move_screen">
+        <arg name="tid" val="28893"/>
+      </action>
+      <action command="gray_covr">
+        <arg name="hide" val="t"/>
+        <arg name="did" val="537"/>
+        <arg name="msgref" val="khloe_gray"/>
+      </action>
+    </action>
+  </script>
+  <script name="end_fight" dontuseletterbox="true">
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_150_conv18"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="537"/>
+      <arg name="label" val="walk1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="537"/>
+      <arg name="to_tid" val="29078"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="537"/>
+      <arg name="label" val="idle1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="539"/>
+      <arg name="label" val="walk1a"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="539"/>
+      <arg name="to_tid" val="28525"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="539"/>
+      <arg name="label" val="idle1a"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="539"/>
+      <arg name="viz" val="f"/>
+    </action>
+  </script>
+  <script name="ruthstart_test" dontuseletterbox="true">
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_150_conv21"/>
+    </action>
+  </script>
+  <script name="ruth_axe">
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv1"/>
+    </action>
+    <action command="move_screen">
+      <arg name="tid" val="31236"/>
+    </action>
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="22"/>
+      <arg name="msgref" val="axe101_gray"/>
+    </action>
+  </script>
+  <script name="log101_script" dontuseletterbox="true">
+    <action command="move_screen">
+      <arg name="tid" val="31236"/>
+    </action>
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="8"/>
+      <arg name="msgref" val="log101_gray"/>
+    </action>
+  </script>
+  <script name="ruth_walk2b" dontuseletterbox="true">
+    <action command="play_anim">
+      <arg name="did" val="532"/>
+      <arg name="label" val="dug1"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="sleep">
+      <arg name="ms" val="1000"/>
+    </action>
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_150_conv17"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="532"/>
+      <arg name="to_tid" val="28002"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="gray_covr">
+      <arg name="hide" val="t"/>
+      <arg name="did" val="247"/>
+      <arg name="msgref" val="clickdrag_gray"/>
+      <arg name="show_arrow" val=""/>
+      <arg name="msg_lr" val="r"/>
+    </action>
+  </script>
+  <script name="jesus_bapt">
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv13"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="540"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="273"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="492"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="move_screen">
+      <arg name="tid" val="25653"/>
+    </action>
+    <action command="play_audio">
+      <arg name="apath" val="sound_effects/final_voice_of_god.mp3"/>
+      <arg name="delay" val="0"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="492"/>
+      <arg name="label" val="start"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="492"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="273"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="540"/>
+      <arg name="viz" val="t"/>
+    </action>
+  </script>
+  <script name="ruth_walk1">
+    <action command="play_anim">
+      <arg name="did" val="8"/>
+      <arg name="label" val="dug1"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="sleep">
+      <arg name="ms" val="1000"/>
+    </action>
+    <action command="start_conv">
+      <arg name="conv_id" val="conversation_map_1101_conv2"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="494"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="258"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="258"/>
+      <arg name="label" val="start"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="258"/>
+      <arg name="label" val="walk1a"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="258"/>
+      <arg name="to_tid" val="30879"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="play_anim">
+      <arg name="did" val="258"/>
+      <arg name="label" val="walk1b"/>
+      <arg name="block" val="f"/>
+    </action>
+    <action command="path_to">
+      <arg name="did" val="258"/>
+      <arg name="to_tid" val="27816"/>
+      <arg name="speed" val="3"/>
+      <arg name="block" val="t"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="258"/>
+      <arg name="viz" val="f"/>
+    </action>
+    <action command="set_vis">
+      <arg name="did" val="493"/>
+      <arg name="viz" val="t"/>
+    </action>
+    <action command="move_screen">
+      <arg name="tid" val="27816"/>
+    </action>
+    <action command="gray_covr">
+      <arg name="hide" val="f"/>
+      <arg name="did" val="493"/>
+      <arg name="msgref" val="ruth101_gray2"/>
+    </action>
+  </script>
+</scripts><conversations>
+  <conversation id="conversation_map_1101_conv1">
+    <bubble ref="1101_dial1" text="PNAME, these are bad times.  Could a Messiah save us?  There are rumors he's here baptizing people!  " said_by="Ruth" type="statement" decoID="494"/>
+    <bubble ref="1101_dial27" text="We've come this far to see him, but that log is blocking the road." said_by="player" type="statement"/>
+    <bubble ref="1101_dial25" text="You are right. PNAME, can you find an axe to clear that fallen log?" said_by="Ruth" type="statement" decoID="494"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv2">
+    <bubble ref="1101_dial2" text="Nice job with that axe, PNAME!  Let's hurry ahead to see the Messiah." said_by="Ruth" type="statement" decoID="494"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv3">
+    <bubble ref="1101_dial3" text="PNAME, there are other people here because of the baptism but they seem upset. Let's see if we can help." said_by="Ruth 2" type="statement" decoID="493"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv4">
+    <bubble ref="1101_dial4" text="I've been looking for love with a lot of men, and I still feel empty ... ^I just want to get free of my past ..." said_by="Khloe" type="statement" decoID="0"/>
+    <bubble ref="1101_dial23" text="Choose one:" said_by="player" type="statement">
+      <button ref="1101_dial5" text="I heard the Messiah is here.  You should go see him." get="null" give="null">
+        <bubble ref="102_dial28" text="He is?  Perhaps he can help me?" said_by="Khloe" type="statement" decoID="0"/>
+      </button>
+      <button ref="1101_dial6" text="I'm sorry you're going through a hard time." get="null" give="null">
+        <bubble ref="102_dial29" text="Thank you...I needed that.  Thank you for caring." said_by="Khloe" type="statement" decoID="0"/>
+      </button>
+    </bubble>
+  </conversation>
+  <conversation id="conversation_map_1101_conv6">
+    <bubble ref="1101_dial11" text="These are tough times, indeed.  Come on, we're getting closer to seeing the baptism ..." said_by="Ruth 2" type="statement" decoID="493"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv7">
+    <bubble ref="1101_dial12" text="Those children are shivering cold! Quick, start a fire to warm them up!" said_by="Ruth 3" type="statement" decoID="476"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv8"/>
+  <conversation id="conversation_map_1101_conv10">
+    <bubble ref="1101_dial16" text="We came a long way to see the Messiah, but we fell in the river!" said_by="child2" type="statement" decoID="496" place_tid="28086"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv11">
+    <bubble ref="1101_dial17" text="Wow! You're a great help to me and my sister!" said_by="child2" type="statement" decoID="496" place_tid="28086"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv12">
+    <bubble ref="1101_dial18" text="Who's in the river? Clear the thornbushes so we can see." said_by="Ruth 3" type="statement" decoID="476"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv13">
+    <bubble ref="1101_dial19" text="I've been baptizing these people, but shouldn't you baptize me?" said_by="John Bapt" type="statement" decoID="273" place_tid="24930"/>
+    <bubble ref="1101_dial20" text="John, we will do it the way my Father said, because this is His holy plan." said_by="Jesus" type="statement" decoID="540" place_tid="25109"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv14">
+    <bubble ref="1101_dial21" text="Get used to the fact this is Roman land, you Jew!  Learn your place and bow to the glory of Rome! " said_by="Roman" type="exclaim" decoID="539"/>
+  </conversation>
+  <conversation id="conversation_map_1101_conv15">
+    <bubble ref="1101_dial22" text="Don't lose hope. Look, even these wilted flowers can be revived." said_by="player" type="statement"/>
+  </conversation>
+  <conversation id="conversation_map_150_conv16">
+    <bubble ref="150_dial30" text="PNAME, there is a broken cart in our way! Click on it to see if you can fix it." said_by="Ruth 2" type="statement" decoID="493"/>
+  </conversation>
+  <conversation id="conversation_map_150_conv17">
+    <bubble ref="150_dial31" text="Great! Now we can continue on to the baptism." said_by="Ruth 2" type="statement" decoID="493"/>
+  </conversation>
+  <conversation id="conversation_map_150_conv18">
+    <bubble ref="150_dial32" text="You broke my cart for no reason!  You Romans think you can do as you please!" said_by="Ehud" type="exclaim" decoID="537"/>
+    <bubble ref="150_dial44" text="Shut your mouth! Or I will shut it for you!" said_by="Roman" type="exclaim" decoID="539"/>
+    <bubble ref="150_dial33" text="Choose one:" said_by="Ehud" type="statement" decoID="537">
+      <button ref="150_dial35" text="Guys, calm down. Don't get in a fight." get="peaceful" give="null"/>
+      <button ref="150_dial36" text="Watch what you say, Roman. There are two of us and one of you." get="zealot" give="null"/>
+      <branch cond="150_dial35">
+        <bubble ref="150_dial39" text="You just be careful." said_by="Roman" type="statement" decoID="539"/>
+      </branch>
+      <branch cond="150_dial36">
+        <bubble ref="150_dial40" text="Strength in numbers, huh? We'll see about that." said_by="Roman" type="statement" decoID="539"/>
+      </branch>
+    </bubble>
+    <branch cond="150_dial35">
+      <bubble ref="150_dial47" text="You just be careful." said_by="Roman" type="statement" decoID="539"/>
+    </branch>
+    <branch cond="150_dial36">
+      <bubble ref="150_dial48" text="Strength in numbers, huh? We'll see about that ..." said_by="Roman" type="statement" decoID="539"/>
+    </branch>
+  </conversation>
+  <conversation id="conversation_map_150_conv20">
+    <branch cond="conversation_map_150_conv18">
+      <bubble ref="150_dial42" text="You Jews need to learn your place. This all belongs to Rome." said_by="Roman" type="statement" decoID="539"/>
+    </branch>
+    <branch cond="null">
+      <bubble ref="150_dial43" text="Get used to the fact this is Roman, you Jew! Learn your place and bow to the glory of Rome." said_by="Roman" type="statement" decoID="539"/>
+    </branch>
+  </conversation>
+  <conversation id="conversation_map_150_conv21">
+    <bubble ref="150_dial49" text="Welcome to Journey of Jesus! Click on Ruth to talk to her." said_by="Ruth" type="statement" decoID="494"/>
+  </conversation>
+  <conversation id="conversation_map_150_conv22">
+    <bubble ref="150_dial51" text="Hello!" said_by="player" type="statement"/>
+    <bubble ref="150_dial52" text="Hello!" said_by="player" type="statement"/>
+    <bubble ref="150_dial53" text="Hello!" said_by="player" type="statement"/>
+  </conversation>
+  <conversation id="conversation_map_150_conv23">
+    <bubble ref="150_dial54" text="Hello!" said_by="player" type="statement"/>
+  </conversation>
+</conversations>         <settings>medium_stamina:5,upper_left_corner:29964,map_start:ruth101_start,lower_right_map_tid:33968,avatar_start_id:31959,upper_left_block_corner:26871,lower_right_block_corner:28941,upper_left_map_tid:21849,</settings>
+       	</map>
