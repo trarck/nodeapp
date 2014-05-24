@@ -1,0 +1,13 @@
+{
+    "name":"nodeapp",
+    "version":"0.0.1",
+    "author":"trarck@gmail.com",
+   
+    "dependencies":{
+        "yhnode":"*",
+        "sax":"*"
+    },
+    "devDependencies":{
+
+    }
+}
