@@ -1,0 +1,45 @@
+<root>
+<div class="jijlb" id="cu_jijlb">
+              <dl>
+                <dd>
+                                                <a class=" " rel='0' href="/video/C16717/3a4b666c0bf94e0d9997558b41814bc4" title="小小智慧树 2008年 第1期 ">
+                小小智慧树 2008年 第1期 </a>
+                                                                <a class=" " rel='1' href="/video/C16717/d679fcc14dda472644ea63b60f54fe62" title="小小智慧树 2008年 6月 第11期">
+                小小智慧树 2008年 6月 第11期</a>
+                                                                <a class=" " rel='2' href="/video/C16717/cd4107a0f9f547c1c1fc7794826602ff" title="小小智慧树 2008年 6月 第10期">
+                小小智慧树 2008年 6月 第10期</a>
+                                                                <a class="last " rel='3' href="/video/C16717/dab4bd384cdb4f7f9dd7a2b686e4a781" title="小小智慧树 2008-06-20">
+                小小智慧树 2008-06-20</a>
+                <div class="clear_float"></div>                                                </dd><dd>
+                                <a class=" " rel='4' href="/video/C16717/42f7083885444a96068a8d8bba955edb" title="小小智慧树 2008-06-06">
+                小小智慧树 2008-06-06</a>
+                                                                <a class=" " rel='5' href="/video/C16717/e5a78e5cc35f4a37ed9e298a3ffe3e80" title="小小智慧树 2008-06-08">
+                小小智慧树 2008-06-08</a>
+                                                                <a class=" " rel='6' href="/video/C16717/d611a3f5b96d4cb34f9aa0bf50cd86fc" title="小小智慧树 2008年 6月7日">
+                小小智慧树 2008年 6月7日</a>
+                                                </dd>
+              </dl>
+            </div>
+    <div class="turn_page_box" id='cuVideoList'><a class="page" page="prev" href="javascript:;" >上一页</a><a class="page" page="1" href="javascript:;" >1</a><a class="page" page="104" href="javascript:;" >...</a><a class="page" page="103" href="javascript:;">103</a><a class="page" page="104" href="javascript:;">104</a><a class="page" page="105" href="javascript:;">105</a><a class="page" page="106" href="javascript:;">106</a><a class="focus">107</a></div>
+<script type="text/javascript">
+jq = jQuery;
+jq('#cuVideoList a').click(function(){
+    var infoId="C16717000001";
+    var page=jq(this).attr('page');
+	if(page==undefined){
+		return false;
+	}
+    var focus=jq('#cuVideoList .focus').text();
+    if(page=='next'){
+        page = parseInt(focus)+1;
+    }else if(page=='prev'){
+        page = parseInt(focus)-1;
+        
+    }
+    jq.get("/index.php?action=video-getVideoList",{page:page,infoId:infoId,type:"CN04", flag:'cu', videoId:'0c680e2d319f41b2b25eb73c33a0915d',istiyu:'0'},function(data){
+    jq('#cuvideoList').html(data);
+});
+return false;
+});
+</script>
+</root>

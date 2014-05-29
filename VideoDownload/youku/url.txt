@@ -1,0 +1,20 @@
+http://f.youku.com/player/getFlvPath/sid/136358075210311035266_00/st/flv/fileid/0300020700513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E?K=732d72e44b6b1c7b241156bd&hd=0&myp=0&ts=373&ypp=0
+http://f.youku.com/player/getFlvPath/sid/136358242253915393089_01/st/flv/fileid/0300020701513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E?start=7&K=c174f70d7c58e07f241156be&hd=0&myp=0&ts=368&ypp=0
+http://f.youku.com/player/getFlvPath/sid/136358242253915393089_02/st/flv/fileid/0300020702513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E?K=46f4b07db0ae9f4628287512&hd=0&myp=0&ts=381&ypp=0
+
+
+http://122.227.237.14/youku/6971E2C8837398331F83DC6D42 /0300020700513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E.flv
+http://59.63.171.74/youku/69721F217DA418115CB8286D80   /0300020701513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E.flv
+http://119.147.157.204/youku/69725B84E9A3D823F3C3233E5D/0300020702513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E.flv
+
+
+http://stat.youku.com/player/addPlayerDurationReport?Type=0&videoid=131348738&number=59&ikuflag=n&starttime=0&mtype=oth&timestamp=1363580858100&fullflag=0&playComplete=0&totalsec=2424&videoOwnerId=68800534&currentPlayTime=0&url=&Tid=0&rnd=106335&pid=null&viewUserId=0&continuationPlay=1&cs=2218&referUrl=null&winType=4&sid=136358075210311035266&source=out&guid=f4b4a67b%2D7fbe%2Da32a%2D6dfb%2D7BBF10016edb&ct=g&topHdVideo=0&hd=0&format=2&showid%5Fv2=
+http://stat.youku.com/player/addPlayerDurationReport?number=59&guid=29bca551%2D361d%2D7664%2Dd071%2D7BD88AF78cac&topHdVideo=0&source=out&Tid=0&sid=136358242253915393089&cs=2218&mtype=oth&rnd=3838256&format=2&hd=0&videoOwnerId=68800534&Type=0&continuationPlay=1&showid%5Fv2=&videoid=131348738&viewUserId=0&ikuflag=n&currentPlayTime=0&pid=null&playComplete=0&starttime=0&fullflag=0&ct=g&totalsec=2424&winType=4&referUrl=null&url=&timestamp=1363586259195
+
+http://f.youku.com/player/getFlvPath/sid/136358709683618369712_00/st/flv/fileid/0300020700513DFB6A39C20419D0168D159A6A-05BF-09EF-3BBB-13FF5B88847E?K=732d72e44b6b1c7b241156bd&hd=0&myp=0&ts=373&ypp=0
+
+
+http://stat.youku.com/player/addPlayerDurationReport?number=60&guid=29bca551%2D361d%2D7664%2Dd071%2D7BD88AF78cac&topHdVideo=0&source=out&Tid=0&sid=136358242253915393089&cs=2218&rnd=6382189&format=2&hd=0&videoOwnerId=68800534&Type=0&continuationPlay=1&showid%5Fv2=&pid=null&viewUserId=0&ikuflag=n&currentPlayTime=723%2E264&videoid=131348738&playComplete=0&timestamp=1363588803126&fullflag=0&ct=g&totalsec=2424&winType=4&mtype=oth
+
+
+http://api.youku.com/player/getPlayList/VideoIDS/XNTI1Mzk0OTUy/timezone/+08/version/5/source/out?password=&n=3&ran=9722
