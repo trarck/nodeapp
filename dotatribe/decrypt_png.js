@@ -66,7 +66,7 @@ function parseTask(task,file,srcDir,outDir){
 		task.done();
 	}else{
 		var ext=path.extname(file);
-		if(ext==".png"){
+		if(ext==".png"||ext==".ccz"||ext==".pvr"){
 			var outFile=path.join(outDir,file);
 			decryptPng(task,fullPath,outFile);
 		}else{
