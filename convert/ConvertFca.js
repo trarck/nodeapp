@@ -7,6 +7,10 @@ var ConvertFca=function(fca,convertMotion){
     this.convertMotion=convertMotion;
 
     this._relationMap=new RelationMap();
+
+    this._baseLayerElementId=0;
+
+    this._textNextItemDeep=10;
 };
 
 ConvertFca.prototype={
@@ -84,72 +88,78 @@ ConvertFca.prototype={
 
             //加个开关，是否使用补间
             if(this.convertMotion){
-                //关键帧转成补间
-                //如果一段连续的关键帧有相同的插值，则可以转换成补间
-                var startFrame=-1;
-                var prevFrame,nextFrame;
-                for(var k=0;k<layer.frames.length-1;++k){
-                    layerFrame=layer.frames[k];
-                    //如果持续帧大于1，则后面不是关键帧，则不会转成补间。补间在被导出的时候，转成的帧前后值不一样。
-                    if(layerFrame.continueCount==1){
-
-                        if(startFrame==-1){
-                            startFrame=k;
-                            //跳过此帧
-                        }else{
-                            //补间已经开始
-                            prevFrame=layer.frames[k-1];
-                            nextFrame=layer.frames[k+1];
-                            if(!MatrixInterpolation.haveSameInterpolation(prevFrame.matrix,layerFrame.matrix,nextFrame.matrix)){
-                                //补间结束
-                                if(k-startFrame>1){
-                                    //2个以上才创建
-                                    layer.frames[startFrame].tweenType="motion";
-                                    layer.frames[startFrame].duration=k-startFrame;
-                                }
-                                startFrame=k;
-                            }
-                        }
-                        //检查插值
-                    }else{
-                        //补间结束
-                        if(startFrame!=-1){
-                            //已经有补间
-                            if(k-startFrame>1) {
-                                //2个以上才创建
-                                layer.frames[startFrame].tweenType = "motion";
-                                layer.frames[startFrame].duration = k - startFrame;
-                            }
-
-                            startFrame=-1;
-                        }
-                    }
-                }
-
-                //结束处理
-                if(startFrame!=-1){
-                    var lastFrame=layer.frames.length-1;
-                    if(lastFrame-startFrame>1) {
-                        //2个以上才创建
-                        layer.frames[startFrame].tweenType = "motion";
-                        layer.frames[startFrame].duration = lastFrame - startFrame;
-                    }
-                }
-
-                //删除被补间转换成的关键帧
-                for(var k=0;k<layer.frames.length;++k) {
-                    layerFrame = layer.frames[k];
-                    if(layerFrame.tweenType){
-                        //fl.trace("delete from "+(k+1)+" to "+ (k+layerFrame.duration-1));
-                        layer.frames.splice(k+1,layerFrame.duration-1);
-                    }
-                }
+                this.convertKeyFrameToMotion(layer);
             }
 
             layers.push(layer);
         }
 
         return layers;
+    },
+
+    convertKeyFrameToMotion:function(layer){
+        //关键帧转成补间
+        //如果一段连续的关键帧有相同的插值，则可以转换成补间
+        var startFrame=-1;
+        var prevFrame,nextFrame,layerFrame;
+        for(var k=0;k<layer.frames.length-1;++k){
+            layerFrame=layer.frames[k];
+            //如果持续帧大于1，则后面不是关键帧，则不会转成补间。补间在被导出的时候，转成的帧前后值不一样。
+            if(layerFrame.continueCount==1){
+
+                if(startFrame==-1){
+                    startFrame=k;
+                    //跳过此帧
+                }else{
+                    //补间已经开始
+                    prevFrame=layer.frames[k-1];
+                    nextFrame=layer.frames[k+1];
+                    if(!MatrixInterpolation.haveSameInterpolation(prevFrame.matrix,layerFrame.matrix,nextFrame.matrix)){
+                        //补间结束
+                        if(k-startFrame>1){
+                            //2个以上才创建
+                            layer.frames[startFrame].tweenType="motion";
+                            layer.frames[startFrame].duration=k-startFrame;
+                        }
+                        startFrame=k;
+                    }
+                }
+                //检查插值
+            }else{
+                //补间结束
+                if(startFrame!=-1){
+                    //已经有补间
+                    if(k-startFrame>1) {
+                        //2个以上才创建
+                        layer.frames[startFrame].tweenType = "motion";
+                        layer.frames[startFrame].duration = k - startFrame;
+                    }
+
+                    startFrame=-1;
+                }
+            }
+        }
+
+        //结束处理
+        if(startFrame!=-1){
+            var lastFrame=layer.frames.length-1;
+            if(lastFrame-startFrame>1) {
+                //2个以上才创建
+                layer.frames[startFrame].tweenType = "motion";
+                layer.frames[startFrame].duration = lastFrame - startFrame;
+            }
+        }
+
+        //删除被补间转换成的关键帧
+        for(var k=0;k<layer.frames.length;++k) {
+            layerFrame = layer.frames[k];
+            if(layerFrame.tweenType){
+                //fl.trace("delete from "+(k+1)+" to "+ (k+layerFrame.duration-1));
+                layer.frames.splice(k+1,layerFrame.duration-1);
+            }
+        }
+
+        return layer;
     },
 
     convertActionEvents:function(action){
@@ -230,11 +240,13 @@ ConvertFca.prototype={
      * 一个元素可能会在不同的层出现，但不会重叠。
      */
     makeBaseLayers:function (action){
+        this._baseLayerElementId=0;
+        this._elementIndexLayerIdMap={};
+
         var frames=action.frames;
 
         var layers=[];
 
-        var before=-1,after=-1;
         var ele,nextEle,prevEle;
         var elePos,nextElePos,prevElePos;
 
@@ -278,6 +290,11 @@ ConvertFca.prototype={
                         }while(insertPos==-1 && ++j<frame.elements.length);
 
                         layers.splice(insertPos,0,ele.index);
+                    }else{
+                        //检查和后面元素的关系
+                        if(!this.nextItemsIsAfter(frame.elements,ele.index,1)){
+                            console.log("some relation ship correct frame="+k+",i=0");
+                        }
                     }
                 }
 
@@ -295,22 +312,31 @@ ConvertFca.prototype={
 
                         this._relationMap.setRelation(prevEle.index,ele.index,-1);
                     }else{
-                        //检查和上个元素的关系
-                        prevEle=frame.elements[i-1];
-                        var result=this._relationMap.compareRelation(prevEle.index,ele.index);
-                        if(!result){
-                            //没有建立关系
-                            this._relationMap.setRelation(prevEle.index,ele.index,-1);
-                            //检查是否需要排序
-                            prevElePos=layers.indexOf(prevEle.index);
-                            if(prevElePos>elePos){
-                                //sort layers
-                                this.sortLayers(layers);
-                            }
-                        }else if(result>0){
+                        //检查后续元素的关系
+                        if(!this.nextItemsIsAfter(frame.elements,ele.index,i)){
                             //关系不对
-                            console.log("some relation ship correct in "+k+","+i,prevEle.index,ele.index,result);
+                            console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
                         }
+
+                        ////检查和上个元素的关系
+                        //prevEle=frame.elements[i-1];
+                        //var result=this._relationMap.compareRelation(prevEle.index,ele.index);
+                        //if(!result){
+                        //    //没有建立关系
+                        //    this._relationMap.setRelation(prevEle.index,ele.index,-1);
+                        //    //检查是否需要排序
+                        //    prevElePos=layers.indexOf(prevEle.index);
+                        //    if(prevElePos>elePos){
+                        //        //sort layers
+                        //        this.sortLayers(layers);
+                        //    }
+                        //}else if(result>0){
+                        //    //关系不对
+                        //    console.log("before relation ship correct frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index+",result="+result);
+                        //}else if(!this.nextItemsIsAfter(frame.elements,ele.index,i)){
+                        //    //关系不对
+                        //    console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
+                        //}
                     }
                 }
             }
@@ -319,12 +345,64 @@ ConvertFca.prototype={
         return layers;
     },
 
+    nextItemsIsAfter:function(elements,currentElementIndex,from){
+        var deep=0;
+        for(;from<elements.length && deep<this._textNextItemDeep;++from){
+            var ele=elements[from];
+            var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+            if(result>0){
+                return false;
+            }else if(result<0){
+                deep++;
+            }
+            //else if(result<0){
+            //    return true;
+            //}
+            //如果不确定，则继续
+        }
+        return true;
+    },
+
+    createBaseLayerObject:function(index,prev,next){
+        var layerObj={
+            id:++this._baseLayerElementId,
+            index:index,
+            prev:prev,
+            next:next
+        };
+
+        var list=this._elementIndexLayerIdMap[index];
+        if(!list){
+            list=this._elementIndexLayerIdMap[index]=[];
+        }
+        list.push(layerObj);
+    },
+
+    getBaseLayerObject:function(index){
+        var list=this._elementIndexLayerIdMap[index];
+        return list && list.length==1?list[0]:list;
+    },
+
+    getBaseLayerObjectEx:function(index,prev,next){
+        var list=this._elementIndexLayerIdMap[index];
+        if(!list)
+            return null;
+
+        if(list.length==1){
+            return list[0];
+        }else{
+
+        }
+    },
+
     sortLayers:function(layers){
         var self=this;
         layers.sort(function(a,b){
             return self._relationMap.compareRelation(a,b);
         });
     },
+
+
 
     getPositionBeforeElement:function (element,layers){
         if(layers.length==0) return 0;
