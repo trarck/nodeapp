@@ -250,7 +250,7 @@ ConvertFca.prototype={
         var ele,nextEle,prevEle;
         var elePos,nextElePos,prevElePos;
 
-		var extLayers=[];
+		var extLayers={};
 		var checkedElements={};
 
         for(var k=0;k<frames.length;++k){
@@ -303,8 +303,8 @@ ConvertFca.prototype={
                     }
                 }
 
-
-                for(var i=1;i<frame.elements.length;++i){
+                //最后面一个元素不检查
+                for(var i=1;i<frame.elements.length-1;++i){
                     ele=frame.elements[i];
 
                     elePos=layers.indexOf(ele.index);
@@ -318,7 +318,7 @@ ConvertFca.prototype={
                         this._relationMap.setRelation(prevEle.index,ele.index,-1);
                     }else{
                         //检查后续元素的关系
-						var checkRet=this.checkNextItemsIsAfter(frame.elements,ele.index,i,checkedElements,this._testNextItemDeep);
+						var checkRet=this.checkNextItemsIsAfter(frame.elements,ele.index,i+1,checkedElements,this._testNextItemDeep);
                         if(!checkRet.result){
                             //关系不对,前面的元素出现在了后面(遮挡需要)。
                             console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
@@ -326,35 +326,26 @@ ConvertFca.prototype={
 							//继续检查后面的元素是否都在当前元素之前，是否有多个图层做了移动。
 							var checkBeforeRet=this.checkNextItemsIsBefore(frame.elements,ele.index,checkRet.stop+1,checkedElements,this._testNextItemDeep);
 							
-							//处理移量最少的。
+							//处理移动量最少的。
 							//后续的元素和当前元素下面的元素比较
 							if(checkBeforeRet.count<checkRet.count){
 								//小于，表示前面的元素后移，即下面的图层上移。
+                                //当前元素没问题，检测停止的元素为被调整的元素
 
 							}else{
 								//大于或等于，后面的元素前移，即上面的图层下移。
+                                //当前元素为被调整的元素
+
+                                //由于当前元素已经被检测过，不用在设置跳过检查标记。
+
+                                //处理整体移动的
+                                if(checkRet.count){
+                                    //有连续的
+
+                                }
+
 							}
                         }
-
-                        ////检查和上个元素的关系
-                        //prevEle=frame.elements[i-1];
-                        //var result=this._relationMap.compareRelation(prevEle.index,ele.index);
-                        //if(!result){
-                        //    //没有建立关系
-                        //    this._relationMap.setRelation(prevEle.index,ele.index,-1);
-                        //    //检查是否需要排序
-                        //    prevElePos=layers.indexOf(prevEle.index);
-                        //    if(prevElePos>elePos){
-                        //        //sort layers
-                        //        this.sortLayers(layers);
-                        //    }
-                        //}else if(result>0){
-                        //    //关系不对
-                        //    console.log("before relation ship correct frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index+",result="+result);
-                        //}else if(!this.nextItemsIsAfter(frame.elements,ele.index,i)){
-                        //    //关系不对
-                        //    console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
-                        //}
                     }
                 }
             }
@@ -438,14 +429,11 @@ ConvertFca.prototype={
             id:++this._baseLayerElementId,
             index:index,
             prev:prev,
-            next:next
+            next:next,
+            frames:[]
         };
 
-        var list=this._elementIndexLayerIdMap[index];
-        if(!list){
-            list=this._elementIndexLayerIdMap[index]=[];
-        }
-        list.push(layerObj);
+        return layerObj;
     },
 
     getBaseLayerObject:function(index){
