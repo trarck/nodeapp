@@ -10,7 +10,7 @@ var ConvertFca=function(fca,convertMotion){
 
     this._baseLayerElementId=0;
 
-    this._textNextItemDeep=10;
+    this._testNextItemDeep=10;
 };
 
 ConvertFca.prototype={
@@ -250,6 +250,9 @@ ConvertFca.prototype={
         var ele,nextEle,prevEle;
         var elePos,nextElePos,prevElePos;
 
+		var extLayers=[];
+		var checkedElements={};
+
         for(var k=0;k<frames.length;++k){
             var frame=frames[k];
             if(frame.elements.length==0)
@@ -268,6 +271,8 @@ ConvertFca.prototype={
                     layers.push(ele.index);
                 }
             }else{
+				checkedElements={};
+
                 //多个元素
                 //处理第一个元素
                 ele=frame.elements[0];
@@ -313,9 +318,22 @@ ConvertFca.prototype={
                         this._relationMap.setRelation(prevEle.index,ele.index,-1);
                     }else{
                         //检查后续元素的关系
-                        if(!this.nextItemsIsAfter(frame.elements,ele.index,i)){
-                            //关系不对
+						var checkRet=this.checkNextItemsIsAfter(frame.elements,ele.index,i,checkedElements,this._testNextItemDeep);
+                        if(!checkRet.result){
+                            //关系不对,前面的元素出现在了后面(遮挡需要)。
                             console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
+
+							//继续检查后面的元素是否都在当前元素之前，是否有多个图层做了移动。
+							var checkBeforeRet=this.checkNextItemsIsBefore(frame.elements,ele.index,checkRet.stop+1,checkedElements,this._testNextItemDeep);
+							
+							//处理移量最少的。
+							//后续的元素和当前元素下面的元素比较
+							if(checkBeforeRet.count<checkRet.count){
+								//小于，表示前面的元素后移，即下面的图层上移。
+
+							}else{
+								//大于或等于，后面的元素前移，即上面的图层下移。
+							}
                         }
 
                         ////检查和上个元素的关系
@@ -345,22 +363,74 @@ ConvertFca.prototype={
         return layers;
     },
 
-    nextItemsIsAfter:function(elements,currentElementIndex,from){
-        var deep=0;
-        for(;from<elements.length && deep<this._textNextItemDeep;++from){
-            var ele=elements[from];
-            var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
-            if(result>0){
-                return false;
-            }else if(result<0){
-                deep++;
-            }
-            //else if(result<0){
-            //    return true;
-            //}
-            //如果不确定，则继续
-        }
-        return true;
+	checkNextItemsIsAfter:function(elements,currentElementIndex,from,skipElements,maxStep){
+		var step=0;
+		var count=0;//检测到符合条件的元素数
+		var ret={};
+
+		for(;from<elements.length;++from){
+			var ele=elements[from];
+			if(skipElements && skipElements[ele.index]){
+				continue;
+			}
+
+			var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+			//ele在检测元素之前，检测结束。
+			if(result>0){
+				ret.result=false;
+				ret.count=count;
+				ret.stop=from;
+				return ret;
+			}else if(result<0){
+				step++;
+			}
+
+			//如果不确定，则继续,不消耗深度，但会增加数量
+			count++;
+			if( maxStep && step<maxStep){
+				break;
+			}
+		}
+	
+		ret.result=true;
+		ret.count=count;
+		ret.stop=from;
+		return ret;
+    },
+
+	checkNextItemsIsBefore:function(elements,currentElementIndex,from,skipElements,maxStep){
+		var step=0;
+		var count=0;//检测到符合条件的元素数
+		var ret={};
+
+		for(;from<elements.length;++from){
+			var ele=elements[from];
+			if(skipElements && skipElements[ele.index]){
+				continue;
+			}
+
+			var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+			//ele在检测元素之后，停止检测。
+			if(result<0){
+				ret.result=false;
+				ret.count=count;
+				ret.stop=from;
+				return ret;
+			}else if(result>0){
+				step++;
+			}
+
+			//如果不确定，则继续,不消耗深度，但会增加数量
+			count++;
+			if( maxStep && step<maxStep){
+				break;
+			}
+		}
+	
+		ret.result=true;
+		ret.count=count;
+		ret.stop=from;
+		return ret;
     },
 
     createBaseLayerObject:function(index,prev,next){
