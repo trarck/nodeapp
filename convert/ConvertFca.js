@@ -250,7 +250,7 @@ ConvertFca.prototype={
         var ele,nextEle,prevEle;
         var elePos,nextElePos,prevElePos;
 
-		var extLayers={};
+		var extLayers=[];
 		var checkedElements={};
 
         for(var k=0;k<frames.length;++k){
@@ -308,15 +308,23 @@ ConvertFca.prototype={
                     ele=frame.elements[i];
 
                     elePos=layers.indexOf(ele.index);
+                    prevEle=frame.elements[i-1];
                     if(elePos==-1){
                         //元素还未加入，加在前面元素的后面。
                         //前一个元素一定在layers中。
-                        prevEle=frame.elements[i-1];
                         insertPos=layers.indexOf(prevEle.index)+1;
                         layers.splice(insertPos,0,ele.index);
 
                         this._relationMap.setRelation(prevEle.index,ele.index,-1);
                     }else{
+                        //检查和前面一个元素的关系
+                        if(this._relationMap.compareRelation(prevEle.index,ele.index)==0) {
+                            //关系不确认，建立关系
+                            this._relationMap.setRelation(prevEle.index, ele.index, -1);
+                            //重新排序
+                            this.sortLayers();
+                        }
+
                         //检查后续元素的关系
 						var checkRet=this.checkNextItemsIsAfter(frame.elements,ele.index,i+1,checkedElements,this._testNextItemDeep);
                         if(!checkRet.result){
@@ -337,6 +345,7 @@ ConvertFca.prototype={
                                 //当前元素为被调整的元素
 
                                 //由于当前元素已经被检测过，不用在设置跳过检查标记。
+
 
                                 //处理整体移动的
                                 if(checkRet.count){
@@ -359,19 +368,31 @@ ConvertFca.prototype={
 		var count=0;//检测到符合条件的元素数
 		var ret={};
 
+        //var isFirst=true;
+        //var firstResult=0;
+        var retResult=true;
+        var result;
+
 		for(;from<elements.length;++from){
 			var ele=elements[from];
 			if(skipElements && skipElements[ele.index]){
 				continue;
 			}
 
-			var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+			result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+            //if(isFirst){
+            //    firstResult=result;
+            //    isFirst=false;
+            //}
 			//ele在检测元素之前，检测结束。
 			if(result>0){
-				ret.result=false;
-				ret.count=count;
-				ret.stop=from;
-				return ret;
+				//ret.result=false;
+				//ret.count=count;
+				//ret.stop=from;
+                //ret.firstResult=firstResult;
+				//return ret;
+                retResult=false;
+                break;
 			}else if(result<0){
 				step++;
 			}
@@ -383,9 +404,10 @@ ConvertFca.prototype={
 			}
 		}
 	
-		ret.result=true;
+		ret.result=retResult;
 		ret.count=count;
 		ret.stop=from;
+        //ret.firstResult=firstResult;
 		return ret;
     },
 
@@ -434,6 +456,57 @@ ConvertFca.prototype={
         };
 
         return layerObj;
+    },
+
+    createBaseLayerExtObject:function(index,prev,next){
+        var layerObj={
+            id:++this._baseLayerElementId,
+            index:index,
+            prev:prev,
+            next:next,
+            frames:[]
+        };
+
+        return layerObj;
+    },
+
+    getLayerExtObject:function(layers,index,prev,next){
+        var layerObj;
+
+        var passPrev,passNext;
+        for(var i=0;i<layers.length;++i){
+            layerObj=layers[i];
+            if(layerObj.index==index){
+                //check prev and next
+
+                if(prev){
+                    passPrev=false;
+                    for(var j=i-1;j>=0;--j){
+                        if(layers[j]==prev){
+                            passPrev=true;
+                        }
+                    }
+                }else{
+                    passPrev=true;
+                }
+
+                if(next){
+                    passNext=false;
+                    for(var j=i+1;j<layers.length;++j){
+                        if(layers[j]==next){
+                            passNext=true;
+                        }
+                    }
+                }else{
+                    passNext=true;
+                }
+
+                if(passPrev && passNext){
+                    return layerObj
+                }
+            }
+        }
+        return null;
     },
 
     getBaseLayerObject:function(index){
