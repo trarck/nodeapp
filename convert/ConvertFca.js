@@ -254,6 +254,7 @@ ConvertFca.prototype={
 
 		var extLayers=[];
 		var checkedElements={};
+        var extElementsSign={};
 
         var self=this;
 
@@ -281,44 +282,82 @@ ConvertFca.prototype={
                     //标记已经处理过，接着检查可以忽略
                     checkedElements[ele.index]=true;
 
+                    elePos=checkRet.stop;
 
-                    prevEle=frame.elements[checkRet.stop-1];
-                    nextEle=frame.elements[checkRet.stop+1];
-
-                    extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                    if(!extLayerObj){
-                        extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                        extLayers.push(extLayerObj);
-                    }
-
-                    extLayerObj.frames.push(frameIndex);
+                    //prevEle=frame.elements[checkRet.stop-1];
+                    //nextEle=frame.elements[checkRet.stop+1];
+                    //
+                    //extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
+                    //if(!extLayerObj){
+                    //    extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
+                    //    extLayers.push(extLayerObj);
+                    //}
+                    //
+                    //extLayerObj.frames.push(frameIndex);
+                    //
+                    //extElementsSign[checkRet.stop]=extLayerObj;
                 }else{
                     //大于或等于，后面的元素前移，即上面的图层下移。
                     //当前元素为被调整的元素
 
                     //由于当前元素已经被检测过，不用在设置跳过检查标记。
-                    prevEle=frame.elements[elePos-1];
-                    nextEle=frame.elements[elePos+1];
-
-                    //取得一个扩展的层
-                    extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                    if(!extLayerObj){
-                        extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                        extLayers.push(extLayerObj);
-                    }
-
-                    //做个帧标记
-                    extLayerObj.frames.push(frameIndex);
+                    //prevEle=frame.elements[elePos-1];
+                    //nextEle=frame.elements[elePos+1];
+                    //
+                    ////取得一个扩展的层
+                    //extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
+                    //if(!extLayerObj){
+                    //    extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
+                    //    extLayers.push(extLayerObj);
+                    //}else{
+                    //    //检查和前面一个元素的关系
+                    //    if(!extElementsSign[elePos-1] && this._relationMap.compareRelation(prevEle.index,extLayerObj.id)==0) {
+                    //        //关系不确认，建立关系
+                    //        self._relationMap.setRelation(prevEle.index, extLayerObj.id, -1);
+                    //        self.fixLayerObject(extLayerObj,prevEle.index);
+                    //    }
+                    //}
+                    //
+                    ////做个帧标记
+                    //extLayerObj.frames.push(frameIndex);
+                    //
+                    //extElementsSign[elePos]=extLayerObj;
 
                     ////不考虑整体移动的情况，会在下个循环的元素处理。有可能下个元素是新加的
                 }
+
+                prevEle=frame.elements[elePos-1];
+                nextEle=frame.elements[elePos+1];
+
+                //取得一个扩展的层
+                extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
+                if(!extLayerObj){
+                    extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
+                    extLayers.push(extLayerObj);
+                }else{
+                    //检查和前面一个元素的关系
+                    if(!extElementsSign[elePos-1] && self._relationMap.compareRelation(prevEle.index,extLayerObj.id)==0) {
+                        //关系不确认，建立关系
+                        self._relationMap.setRelation(prevEle.index, extLayerObj.id, -1);
+                        self.fixLayerObject(extLayerObj,prevEle.index);
+                    }
+                }
+
+                //做个帧标记
+                extLayerObj.frames.push(frameIndex);
+
+                extElementsSign[elePos]=extLayerObj;
             }
+
+            return checkRet.result;
         }
 
         for(var k=0;k<frames.length;++k){
             var frame=frames[k];
             if(frame.elements.length==0)
                 continue;
+
+            extElementsSign={};
 
             //first element
             ele=frame.elements[0];
@@ -359,9 +398,7 @@ ConvertFca.prototype={
                         layers.splice(insertPos,0,ele.index);
                     }else{
                         //检查和后面元素的关系
-                        if(!this.nextItemsIsAfter(frame.elements,ele.index,1)){
-                            console.log("some relation ship correct frame="+k+",i=0");
-                        }
+                        parseExistsElement(frame,k,0);
                     }
                 }
 
@@ -379,79 +416,32 @@ ConvertFca.prototype={
 
                         this._relationMap.setRelation(prevEle.index,ele.index,-1);
                     }else{
-                        //检查和前面一个元素的关系
-                        if(this._relationMap.compareRelation(prevEle.index,ele.index)==0) {
-                            //关系不确认，建立关系
-                            this._relationMap.setRelation(prevEle.index, ele.index, -1);
-                            //重新排序
-                            this.sortLayers();
-                        }
-
                         //检查后续元素的关系
-                        var extLayerObj;
-						var checkRet=this.checkNextItemsIsAfter(frame.elements,ele.index,i+1,checkedElements,this._testNextItemDeep);
-                        if(!checkRet.result){
-                            //关系不对,前面的元素出现在了后面(遮挡需要)。
-                            console.log("after relation ship correct frame="+k+",i="+i+",ele="+ele.index);
+                        var checkResult=parseExistsElement(frame,k,i);
+                        if(checkResult){
+                            //不是扩展层
 
-							//继续检查后面的元素是否都在当前元素之前，是否有多个图层做了移动。
-							var checkBeforeRet=this.checkNextItemsIsBefore(frame.elements,ele.index,checkRet.stop+1,checkedElements,this._testNextItemDeep);
-							
-							//处理移动量最少的。
-							//后续的元素和当前元素下面的元素比较
-							if(checkBeforeRet.count<checkRet.count+1){
-								//小于，表示前面的元素后移，即下面的图层上移。
-                                //当前元素没问题，检测停止的元素为被调整的元素
-
-                                for(var j =checkRet.stop,s=checkRet.stop+checkBeforeRet.count;j<=s;++j){
-                                    ele=frame.elements[j];
-                                    prevEle=frame.elements[j-1];
-                                    nextEle=frame.elements[j+1];
-
-                                    //标记已经处理过，接着检查可以忽略
-                                    checkedElements[ele.index]=true;
-
-                                    extLayerObj=this.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                                    if(!extLayerObj){
-                                        extLayerObj=this.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                                        extLayers.push(extLayerObj);
-                                    }
-                                }
-							}else{
-								//大于或等于，后面的元素前移，即上面的图层下移。
-                                //当前元素为被调整的元素
-
-                                //由于当前元素已经被检测过，不用在设置跳过检查标记。
-
-                                nextEle=frame.elements[i+1];
-                                //取得一个扩展的层
-                                extLayerObj=this.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                                if(!extLayerObj){
-                                    extLayerObj=this.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                                    extLayers.push(extLayerObj);
-                                }
-                                //做个帧标记
-                                extLayerObj.frames.push(k);
-
-                                //处理整体移动的
-                                if(checkRet.count){
-                                    //有连续的
-                                    for(var j=i+ 1,s=i+checkRet.count;j<=s;++j){
-                                        ele=frame.elements[j];
-                                        prevEle=frame.elements[j-1];
-                                        nextEle=frame.elements[j+1];
-                                        extLayerObj=this.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                                        if(!extLayerObj){
-                                            extLayerObj=this.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                                            extLayers.push(extLayerObj);
-                                        }
-                                    }
-                                }
-							}
+                            //检查和前面一个元素的关系
+                            if(this._relationMap.compareRelation(prevEle.index,ele.index)==0) {
+                                //关系不确认，建立关系
+                                this._relationMap.setRelation(prevEle.index, ele.index, -1);
+                                //重新排序
+                                console.log("sort layers frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index);
+                                this.sortLayers(layers);
+                            }
                         }
                     }
                 }
             }
+        }
+
+        console.log(extLayers);
+
+        //merge extLayers to layers
+        for(var i=0;i<extLayers.length;++i){
+            var extLayerObj=extLayers[i];
+            var prevPos=layers.indexOf(extLayerObj.prev);
+            layers.splice(prevPos+1,0,extLayerObj.index);
         }
 
         return layers;
@@ -588,10 +578,10 @@ ConvertFca.prototype={
      * @returns {*}
      */
     fixLayerObject:function(layerObj,prev,next){
-        if(this._relationMap.compareRelation(layerObj.prev,prev)==-1){
+        if(prev && this._relationMap.compareRelation(layerObj.prev,prev)==-1){
             layerObj.prev=prev;
         }
-        if(this._relationMap.compareRelation(layerObj.next,next)==1){
+        if(next && this._relationMap.compareRelation(layerObj.next,next)==1){
             //need fix
             layerObj.next=next;
         }
@@ -665,8 +655,11 @@ ConvertFca.prototype={
     sortLayers:function(layers){
         var self=this;
         layers.sort(function(a,b){
-            return self._relationMap.compareRelation(a,b);
+            var r=self._relationMap.compareRelation(a,b)
+            return  r==0?1:r;
         });
+
+        return layers;
     },
 
 
