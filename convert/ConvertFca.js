@@ -1,6 +1,10 @@
 ﻿
 var MatrixInterpolation=require("./MatrixInterpolation");
 var RelationMap=require("./RelationMap");
+var define=require("./define");
+var EventType=define.EventType;
+var EventLayerPrefix=define.EventLayerPrefix;
+var EventTypeNames=define.EventTypeNames;
 
 var ConvertFca=function(fca,convertMotion){
     this.fca=fca;
@@ -40,12 +44,12 @@ ConvertFca.prototype={
         return {
             name:action.name,
             frameCount:action.frames.length,
-            layers:this.convertActionElements2(action),
-            eventLayers:[]//this.convertActionEvents(action)
+            layers:this.convertActionElements(action),
+            eventLayers:this.convertActionEvents(action)
         };
     },
 
-    convertActionElements:function (action){
+    convertActionElements_old:function (action){
         var characters=this.fca.elements;
         var frames=action.frames;
         var baseLayers=this.makeBaseLayers(action);
@@ -97,7 +101,7 @@ ConvertFca.prototype={
         return layers;
     },
 
-    convertActionElements2:function (action){
+    convertActionElements:function (action){
         var characters=this.fca.elements;
         var frames=action.frames;
         var baseLayers=this.makeBaseLayers(action);
