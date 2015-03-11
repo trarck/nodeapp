@@ -112,4 +112,4 @@ var MatrixTransformer={
     setRotation:setRotation
 };
 
-module.exprots=MatrixTransformer;
+module.exports=MatrixTransformer;

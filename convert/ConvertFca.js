@@ -219,7 +219,7 @@ ConvertFca.prototype={
         for(var k=0;k<layer.frames.length;++k) {
             layerFrame = layer.frames[k];
             if(layerFrame.tweenType){
-                //fl.trace("delete from "+(k+1)+" to "+ (k+layerFrame.duration-1));
+                console.log("delete "+layer.element+" from "+(k+1)+" to "+ (k+layerFrame.duration-1));
                 layer.frames.splice(k+1,layerFrame.duration-1);
             }
         }
