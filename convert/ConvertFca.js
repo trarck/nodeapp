@@ -330,11 +330,13 @@ ConvertFca.prototype={
             var nextEle,prevEle;
 
             var checkRet=self.checkNextItemsIsAfter(frame.elements,ele.index,elePos+1,checkedElements,self._testNextItemDeep);
+            
+            var currentIsOk=true;
 
             if(!checkRet.result){
 
                 //关系不对,前面的元素出现在了后面(遮挡需要)。
-                console.log("after relation ship correct frame="+frameIndex+",i="+elePos+",ele="+ele.index+",count="+checkRet.count);
+                //console.log("after relation ship correct frame="+frameIndex+",i="+elePos+",ele="+ele.index+",count="+checkRet.count);
 
                 //继续检查后面的元素是否都在当前元素之前，是否有多个图层做了移动。
                 var checkBeforeRet=self.checkNextItemsIsBefore(frame.elements,ele.index,checkRet.stop+1,checkedElements,self._testNextItemDeep);
@@ -355,6 +357,7 @@ ConvertFca.prototype={
                 }else{
                     //大于或等于，后面的元素前移，即上面的图层下移。
                     //当前元素为被调整的元素
+                    currentIsOk=false;
 
                     //由于当前元素已经被检测过，不用在设置跳过检查标记。
                     //prevEle=frame.elements[elePos-1];
@@ -414,11 +417,13 @@ ConvertFca.prototype={
                 }
 
                 //做个帧标记
-                extLayerObj.frames.push(self.createLayerObjectFrameElement(frameIndex,elePos));
+                //extLayerObj.frames.push(self.createLayerObjectFrameElement(frameIndex,elePos));
+                self.addFrameElementToLayerObject(extLayerObj,frameIndex,elePos);
 
                 extElementsSign[elePos]=extLayerObj;
             }
-            return checkRet.result;
+
+            return currentIsOk;
         }
 
         for(var k=0;k<frames.length;++k){
@@ -485,6 +490,10 @@ ConvertFca.prototype={
                 for(var i=1;i<frame.elements.length;++i){
                     ele=frame.elements[i];
 
+                    if(checkedElements[ele.index]){
+                        continue;
+                    }
+
                     prevEle=frame.elements[i-1];
 
                     currentObj=this._layerObjects[ele.index];
@@ -520,7 +529,7 @@ ConvertFca.prototype={
                                 //关系不确认，建立关系
                                 this._relationMap.setRelation(prevEle.index, ele.index, -1);
                                 //重新排序
-                                console.log("sort layers frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index);
+                                //console.log("sort layers frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index);
                                 this.sortLayers(layers);
                             }
 
