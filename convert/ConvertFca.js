@@ -10,7 +10,7 @@ var ConvertFca=function(fca,convertMotion){
 
     this._baseLayerElementId=0;
 
-    this._testNextItemDeep=10;
+    this._testNextItemDeep=5;
 };
 
 ConvertFca.prototype={
@@ -243,14 +243,14 @@ ConvertFca.prototype={
         //make the id is not same as index
         this._baseLayerElementId=this.fca.elements.length;
 
-        this._elementIndexLayerIdMap={};
+        this._layerObjects={};
 
         var frames=action.frames;
 
         var layers=[];
 
         var ele,nextEle,prevEle;
-        var elePos,nextElePos,prevElePos;
+        var currentObj,prevObj;
 
 		var extLayers=[];
 		var checkedElements={};
@@ -264,9 +264,11 @@ ConvertFca.prototype={
             var nextEle,prevEle;
 
             var checkRet=self.checkNextItemsIsAfter(frame.elements,ele.index,elePos+1,checkedElements,self._testNextItemDeep);
+
             if(!checkRet.result){
+
                 //关系不对,前面的元素出现在了后面(遮挡需要)。
-                console.log("after relation ship correct frame="+frameIndex+",i="+elePos+",ele="+ele.index);
+                console.log("after relation ship correct frame="+frameIndex+",i="+elePos+",ele="+ele.index+",count="+checkRet.count);
 
                 //继续检查后面的元素是否都在当前元素之前，是否有多个图层做了移动。
                 var checkBeforeRet=self.checkNextItemsIsBefore(frame.elements,ele.index,checkRet.stop+1,checkedElements,self._testNextItemDeep);
@@ -284,18 +286,6 @@ ConvertFca.prototype={
 
                     elePos=checkRet.stop;
 
-                    //prevEle=frame.elements[checkRet.stop-1];
-                    //nextEle=frame.elements[checkRet.stop+1];
-                    //
-                    //extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
-                    //if(!extLayerObj){
-                    //    extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
-                    //    extLayers.push(extLayerObj);
-                    //}
-                    //
-                    //extLayerObj.frames.push(frameIndex);
-                    //
-                    //extElementsSign[checkRet.stop]=extLayerObj;
                 }else{
                     //大于或等于，后面的元素前移，即上面的图层下移。
                     //当前元素为被调整的元素
@@ -326,29 +316,42 @@ ConvertFca.prototype={
                     ////不考虑整体移动的情况，会在下个循环的元素处理。有可能下个元素是新加的
                 }
 
-                prevEle=frame.elements[elePos-1];
+                if(extElementsSign[elePos-1]){
+                    prevObj=extElementsSign[elePos-1];
+                }else{
+                    prevEle=frame.elements[elePos-1];
+                    prevObj=self._layerObjects[prevEle.index];
+                    if(!prevObj){
+                        //temp object
+                        prevObj={
+                            id:prevEle.index,
+                            index:prevEle.index
+                        };
+                    }
+                }
+
                 nextEle=frame.elements[elePos+1];
 
                 //取得一个扩展的层
-                extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevEle.index,nextEle.index);
+                extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevObj.id,nextEle.index);
                 if(!extLayerObj){
-                    extLayerObj=self.createExtLayerObject(ele.index,prevEle.index,nextEle.index);
+                    extLayerObj=self.createExtLayerObject(ele.index,prevObj.id,nextEle.index);
                     extLayers.push(extLayerObj);
+                    self._relationMap.setRelation(prevObj.id, extLayerObj.id, -1);
                 }else{
                     //检查和前面一个元素的关系
-                    if(!extElementsSign[elePos-1] && self._relationMap.compareRelation(prevEle.index,extLayerObj.id)==0) {
+                    if(self._relationMap.compareRelation(prevObj.id,extLayerObj.id)==0) {
                         //关系不确认，建立关系
-                        self._relationMap.setRelation(prevEle.index, extLayerObj.id, -1);
-                        self.fixLayerObject(extLayerObj,prevEle.index);
+                        self._relationMap.setRelation(prevObj.id, extLayerObj.id, -1);
+                        self.fixLayerObject(extLayerObj,prevObj.id);
                     }
                 }
 
                 //做个帧标记
-                extLayerObj.frames.push(frameIndex);
+                extLayerObj.frames.push(self.createLayerObjectFrameElement(frameIndex,elePos));
 
                 extElementsSign[elePos]=extLayerObj;
             }
-
             return checkRet.result;
         }
 
@@ -364,12 +367,14 @@ ConvertFca.prototype={
 
             if(frame.elements.length==1){
                 //只有一个元素
-                if(layers.indexOf(ele.index)!=-1){
+                if(this._layerObjects[ele.index]){
                     //存在，则不比较
                     continue;
                 }else{
                     //添加到后面，待后面帧处理
-                    layers.push(ele.index);
+                    currentObj=this.createBaseLayerObject(ele.index);
+                    layers.push(currentObj);
+                    currentObj.frames.push(this.createLayerObjectFrameElement(k,0));
                 }
             }else{
 				checkedElements={};
@@ -379,11 +384,13 @@ ConvertFca.prototype={
                 ele=frame.elements[0];
                 //第一帧的第一个元素直接加入
                 if(k==0){
-                    layers.push(ele.index);
+                    currentObj=this.createBaseLayerObject(ele.index);
+                    layers.push(currentObj);
+                    currentObj.frames.push(this.createLayerObjectFrameElement(k,0));
                 }else{
-                    elePos=layers.indexOf(ele.index);
                     //第一个元素没有加入，则加在下个存在元素的前面。已经加入不做处理
-                    if(elePos==-1){
+                    currentObj=this._layerObjects[ele.index];
+                    if(!currentObj){
                         //加入下个元素的前面
                         var insertPos=-1;
                         var j=1;
@@ -392,36 +399,56 @@ ConvertFca.prototype={
                             if(!nextEle){
                                 console.log(k,i,j);
                             }
-                            insertPos=layers.indexOf(nextEle.index);
+                            insertPos=this.findLayerObject(layers,nextEle.index);
                         }while(insertPos==-1 && ++j<frame.elements.length);
 
-                        layers.splice(insertPos,0,ele.index);
+                        currentObj=this.createBaseLayerObject(ele.index);
+                        layers.splice(insertPos,0,currentObj);
+
+                        this.addFrameElementToLayerObject(currentObj,k,0);
                     }else{
                         //检查和后面元素的关系
-                        parseExistsElement(frame,k,0);
+                        if(parseExistsElement(frame,k,0)){
+                            this.addFrameElementToLayerObject(currentObj,k,0);
+                        }
                     }
                 }
 
-                //最后面一个元素不检查
-                for(var i=1;i<frame.elements.length-1;++i){
+                //最后面一个元素不检查后续关系
+                for(var i=1;i<frame.elements.length;++i){
                     ele=frame.elements[i];
 
-                    elePos=layers.indexOf(ele.index);
                     prevEle=frame.elements[i-1];
-                    if(elePos==-1){
-                        //元素还未加入，加在前面元素的后面。
-                        //前一个元素一定在layers中。
-                        insertPos=layers.indexOf(prevEle.index)+1;
-                        layers.splice(insertPos,0,ele.index);
 
-                        this._relationMap.setRelation(prevEle.index,ele.index,-1);
-                    }else{
+                    currentObj=this._layerObjects[ele.index];
+                    if(!currentObj){
+                        //元素还未加入，加在前面不是扩展元素的后面。
+                        if(extElementsSign[i-1]){
+                            //前面的是扩展元素
+                            this._relationMap.setRelation(extElementsSign[i-1].id,ele.index,-1);
+                            //向前找到不是扩展元素
+                            for(var j=i-2;j>=0;--j){
+                                if(!extElementsSign[j]){
+                                    prevEle=frame.elements[j];
+                                    break;
+                                }
+                            }
+                        }else{
+                            //前一个元素不是扩展元素。
+                            this._relationMap.setRelation(prevEle.index,ele.index,-1);
+                        }
+
+                        currentObj=this.createBaseLayerObject(ele.index);
+                        insertPos= this.findLayerObject(layers,prevEle.index)+1;
+                        layers.splice(insertPos,0,currentObj);
+
+                        this.addFrameElementToLayerObject(currentObj,k,i);
+                    }else if(i!=frame.elements.length-1){
                         //检查后续元素的关系
                         var checkResult=parseExistsElement(frame,k,i);
+                        //false，表示是扩展层，则不需要处理和前一个元素的关系。扩展层相当于一个虚拟层
                         if(checkResult){
-                            //不是扩展层
-
-                            //检查和前面一个元素的关系
+                            //true,表示不是扩展层，检查和前面一个元素的关系
                             if(this._relationMap.compareRelation(prevEle.index,ele.index)==0) {
                                 //关系不确认，建立关系
                                 this._relationMap.setRelation(prevEle.index, ele.index, -1);
@@ -429,19 +456,23 @@ ConvertFca.prototype={
                                 console.log("sort layers frame="+k+",i="+i+",ele="+ele.index+",prev="+prevEle.index);
                                 this.sortLayers(layers);
                             }
+
+                            this.addFrameElementToLayerObject(currentObj,k,i);
                         }
+                    }else{
+                        this.addFrameElementToLayerObject(currentObj,k,i);
                     }
                 }
             }
         }
 
-        console.log(extLayers);
+        //console.log(extLayers);
 
         //merge extLayers to layers
         for(var i=0;i<extLayers.length;++i){
             var extLayerObj=extLayers[i];
-            var prevPos=layers.indexOf(extLayerObj.prev);
-            layers.splice(prevPos+1,0,extLayerObj.index);
+            var prevPos=this.findLayerObject(layers,extLayerObj.prev);
+            layers.splice(prevPos+1,0,extLayerObj);
         }
 
         return layers;
@@ -452,8 +483,6 @@ ConvertFca.prototype={
 		var count=0;//检测到符合条件的元素数
 		var ret={};
 
-        //var isFirst=true;
-        //var firstResult=0;
         var retResult=true;
         var result;
 
@@ -464,26 +493,16 @@ ConvertFca.prototype={
 			}
 
 			result=this._relationMap.compareRelation(currentElementIndex,ele.index);
-            //if(isFirst){
-            //    firstResult=result;
-            //    isFirst=false;
-            //}
 			//ele在检测元素之前，检测结束。
 			if(result>0){
-				//ret.result=false;
-				//ret.count=count;
-				//ret.stop=from;
-                //ret.firstResult=firstResult;
-				//return ret;
                 retResult=false;
                 break;
 			}else if(result<0){
 				step++;
 			}
-
 			//如果不确定，则继续,不消耗深度，但会增加数量
 			count++;
-			if( maxStep && step<maxStep){
+			if( maxStep && step>=maxStep){
 				break;
 			}
 		}
@@ -500,6 +519,8 @@ ConvertFca.prototype={
 		var count=0;//检测到符合条件的元素数
 		var ret={};
 
+        var retResult=true;
+
 		for(;from<elements.length;++from){
 			var ele=elements[from];
 			if(skipElements && skipElements[ele.index]){
@@ -509,36 +530,33 @@ ConvertFca.prototype={
 			var result=this._relationMap.compareRelation(currentElementIndex,ele.index);
 			//ele在检测元素之后，停止检测。
 			if(result<0){
-				ret.result=false;
-				ret.count=count;
-				ret.stop=from;
-				return ret;
+                retResult=false;
+                break;
 			}else if(result>0){
 				step++;
 			}
 
 			//如果不确定，则继续,不消耗深度，但会增加数量
 			count++;
-			if( maxStep && step<maxStep){
+			if( maxStep && step>=maxStep){
 				break;
 			}
 		}
 	
-		ret.result=true;
+		ret.result=retResult;
 		ret.count=count;
 		ret.stop=from;
 		return ret;
     },
 
-    createBaseLayerObject:function(index,prev,next){
+    createBaseLayerObject:function(index){
         var layerObj={
-            id:++this._baseLayerElementId,
+            id:index,
             index:index,
-            prev:prev,
-            next:next,
             frames:[]
         };
 
+        this._layerObjects[layerObj.id]=layerObj;
         return layerObj;
     },
 
@@ -551,7 +569,22 @@ ConvertFca.prototype={
             frames:[]
         };
 
+        this._layerObjects[layerObj.id]=layerObj;
+
         return layerObj;
+    },
+
+    createLayerObjectFrameElement:function(frameIndex,elementPos){
+        return frameIndex+","+elementPos;
+
+        //return {
+        //    frame:frameIndex,
+        //    element:elementPos
+        //};
+    },
+
+    addFrameElementToLayerObject:function(layerObject,frameIndex,elementPos){
+        layerObject.frames.push(this.createLayerObjectFrameElement(frameIndex,elementPos));
     },
 
     getExtLayerObject:function(layers,index,prev,next){
@@ -588,140 +621,26 @@ ConvertFca.prototype={
         return layerObj;
     },
 
-    getLayerObject:function(layers,index,prev,next){
+    findLayerObject:function(layers,index){
         var layerObj;
-        var tempObj;
-        var passPrev,passNext;
         for(var i=0;i<layers.length;++i){
             layerObj=layers[i];
 
-            if(layerObj.index==index){
-                //check prev and next
-                if(prev){
-                    passPrev=false;
-                    for(var j=i-1;j>=0;--j){
-                        if(layers[j].index==prev){
-                            passPrev=true;
-                        }
-                    }
-                }else{
-                    passPrev=true;
-                }
-
-                if(next){
-                    passNext=false;
-                    for(var j=i+1;j<layers.length;++j){
-                        tempObj=layers[j];
-
-                        //检查next之前是否有相同元素
-                        if(tempObj.index==index){
-                            //stop on next same
-                            break;
-                        }
-
-                        if(tempObj.index==next){
-                            passNext=true;
-                        }
-                    }
-                }else{
-                    passNext=true;
-                }
-
-                if(passPrev && passNext){
-                    return layerObj
-                }
+            if(layerObj.id==index){
+                return i;
             }
         }
-        return null;
+        return -1;
     },
 
-    getBaseLayerObject:function(index){
-        var list=this._elementIndexLayerIdMap[index];
-        return list && list.length==1?list[0]:list;
-    },
-
-    getBaseLayerObjectEx:function(index,prev,next){
-        var list=this._elementIndexLayerIdMap[index];
-        if(!list)
-            return null;
-
-        if(list.length==1){
-            return list[0];
-        }else{
-
-        }
-    },
-
-    sortLayers:function(layers){
-        var self=this;
-        layers.sort(function(a,b){
-            var r=self._relationMap.compareRelation(a,b)
-            return  r==0?1:r;
+    sortLayers:function(layers) {
+        var self = this;
+        layers.sort(function (a, b) {
+            var r = self._relationMap.compareRelation(a.id, b.id);
+            return r == 0 ? 1 : r;
         });
 
         return layers;
-    },
-
-
-
-    getPositionBeforeElement:function (element,layers){
-        if(layers.length==0) return 0;
-
-        return layers.indexOf(element);
-    },
-
-    getPositionAfterElement:function (element,layers){
-        if(layers.length==0) return 0;
-
-        var pos=layers.indexOf(element);
-    
-        return pos==-1?-1:pos+1;
-    },
-
-    comparePosition:function (currentPosition,element,layers){
-        if(layers.length==0) return 0;
-
-        var pos=layers.indexOf(element);
-        if(pos==-1){
-            //unknown
-            return 0;
-        }else if(currentPosition<pos){
-            //before
-            return -1;
-        }else if(currentPosition>pos){
-            //after
-            return 1;
-        }else{
-            //error
-            throw "the current position is same as element index";
-        }   
-        
-        return -999;
-    },
-
-    isPositionBeforeElement:function (currentPosition,element,layers){
-        if(layers.length==0) return 0;
-
-        var pos=layers.indexOf(element);
-        
-        return pos==-1?true:(currentPosition<pos);
-    },
-
-    isPositionAfterElement:function (currentPosition,element,layers){
-        if(layers.length==0) return 0;
-
-        var pos=layers.indexOf(element);
-        
-        return pos==-1?true:(currentPosition>pos);
-    },
-    
-    isPositionBetweenElement:function (currentPosition,beforeElement,afterElement,layers){
-        if(layers.length==0) return 0;
-
-        var beforePos=layers.indexOf(beforeElement);
-        var afterPos=layers.indexOf(afterElement);
-        
-        return currentPosition>beforePos && currentPosition<afterPos;
     }
 };
 module.exports=ConvertFca;
