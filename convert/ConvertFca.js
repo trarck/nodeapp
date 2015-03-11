@@ -40,8 +40,8 @@ ConvertFca.prototype={
         return {
             name:action.name,
             frameCount:action.frames.length,
-            layers:this.convertActionElements(action),
-            eventLayers:this.convertActionEvents(action)
+            layers:this.convertActionElements2(action),
+            eventLayers:[]//this.convertActionEvents(action)
         };
     },
 
@@ -86,6 +86,67 @@ ConvertFca.prototype={
                 }
             }
 
+            //加个开关，是否使用补间
+            if(this.convertMotion){
+                this.convertKeyFrameToMotion(layer);
+            }
+
+            layers.push(layer);
+        }
+
+        return layers;
+    },
+
+    convertActionElements2:function (action){
+        var characters=this.fca.elements;
+        var frames=action.frames;
+        var baseLayers=this.makeBaseLayers(action);
+        var layers=[];
+
+        var frameLength=frames.length;
+
+        //处理element
+        for(var i=0;i<baseLayers.length;++i){
+            var layerObject=baseLayers[i];
+            var character=characters[layerObject.index-1];
+            var layer={
+                element:character.name,
+                frames:[]
+            };
+
+            //分离出关键帧
+            var layerFrame;
+            var it;
+            var k=0;
+            for(var j=0;j<layerObject.frames.length;++j){
+                it=layerObject.frames[j];
+                var frame=frames[it.frame];
+                var ele=frame.elements[it.element];
+
+                if(k!=it.frame){
+                    if(layerFrame){
+                        layerFrame=null;
+                    }
+
+                    k=it.frame;
+                }
+
+                //k==it.frame
+
+                if(layerFrame && this.isFramePropertySame(layerFrame,ele)){
+                    ++layerFrame.continueCount;
+                }else{
+                    layerFrame={
+                        startFrame:k,
+                        continueCount:1,
+                        alpha:ele.alpha,
+                        matrix:ele.matrix
+                    };
+                    layer.frames.push(layerFrame);
+                }
+
+                ++k;
+            }
             //加个开关，是否使用补间
             if(this.convertMotion){
                 this.convertKeyFrameToMotion(layer);
@@ -240,6 +301,7 @@ ConvertFca.prototype={
      * 一个元素可能会在不同的层出现，但不会重叠。
      */
     makeBaseLayers:function (action){
+        this._relationMap.clear();
         //make the id is not same as index
         this._baseLayerElementId=this.fca.elements.length;
 
@@ -386,7 +448,7 @@ ConvertFca.prototype={
                 if(k==0){
                     currentObj=this.createBaseLayerObject(ele.index);
                     layers.push(currentObj);
-                    currentObj.frames.push(this.createLayerObjectFrameElement(k,0));
+                    this.addFrameElementToLayerObject(currentObj,k,0);//currentObj.frames.push(this.createLayerObjectFrameElement(k,0));
                 }else{
                     //第一个元素没有加入，则加在下个存在元素的前面。已经加入不做处理
                     currentObj=this._layerObjects[ele.index];
@@ -395,6 +457,7 @@ ConvertFca.prototype={
                         var insertPos=-1;
                         var j=1;
                         do{
+
                             nextEle=frame.elements[j];
                             if(!nextEle){
                                 console.log(k,i,j);
@@ -493,6 +556,7 @@ ConvertFca.prototype={
 			}
 
 			result=this._relationMap.compareRelation(currentElementIndex,ele.index);
+
 			//ele在检测元素之前，检测结束。
 			if(result>0){
                 retResult=false;
@@ -506,7 +570,7 @@ ConvertFca.prototype={
 				break;
 			}
 		}
-	
+
 		ret.result=retResult;
 		ret.count=count;
 		ret.stop=from;
@@ -575,12 +639,12 @@ ConvertFca.prototype={
     },
 
     createLayerObjectFrameElement:function(frameIndex,elementPos){
-        return frameIndex+","+elementPos;
+        //return frameIndex+","+elementPos;
 
-        //return {
-        //    frame:frameIndex,
-        //    element:elementPos
-        //};
+        return {
+            frame:frameIndex,
+            element:elementPos
+        };
     },
 
     addFrameElementToLayerObject:function(layerObject,frameIndex,elementPos){

@@ -97,6 +97,10 @@ RelationMap.prototype= {
         }
         //搜索不到。a和b没有关系
         return 0;
+    },
+
+    clear:function(){
+        this._map={};
     }
 };
 
