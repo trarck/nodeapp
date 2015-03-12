@@ -6,9 +6,9 @@ var data=JSON.parse(content);
 
 var convert=new ConvertFca(data,true);
 
-var baseLayers=convert.makeBaseLayers(data.actions[8]);
-//console.log(baseLayers);
-//fs.writeFileSync("temp/b.js","var b="+JSON.stringify(baseLayers,null,4)+";");
+var baseLayers=convert.makeBaseLayers(data.actions[0]);
+console.log(baseLayers);
+fs.writeFileSync("temp/b.js","var b="+JSON.stringify(baseLayers,null,4)+";");
 
 //var action=convert.convertAction(data.actions[8]);
 
