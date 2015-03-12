@@ -389,22 +389,31 @@ ConvertFca.prototype={
                     prevObj=extElementsSign[elePos-1];
                 }else{
                     prevEle=frame.elements[elePos-1];
-                    prevObj=self._layerObjects[prevEle.index];
-                    if(!prevObj){
-                        //temp object
+
+                    if(!prevEle){
                         prevObj={
-                            id:prevEle.index,
-                            index:prevEle.index
+                            id:0,
+                            index:0
                         };
+                    }else{
+                        prevObj=self._layerObjects[prevEle.index];
+                        if(!prevObj){
+                            //temp object
+                            prevObj={
+                                id:prevEle.index,
+                                index:prevEle.index
+                            };
+                        }
                     }
+
                 }
 
                 nextEle=frame.elements[elePos+1];
 
                 //取得一个扩展的层
-                extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevObj.id,nextEle.index);
+                extLayerObj=self.getExtLayerObject(extLayers,ele.index,prevObj.id,nextEle?nextEle.index:0);
                 if(!extLayerObj){
-                    extLayerObj=self.createExtLayerObject(ele.index,prevObj.id,nextEle.index);
+                    extLayerObj=self.createExtLayerObject(ele.index,prevObj.id,nextEle?nextEle.index:0);
                     extLayers.push(extLayerObj);
                     self._relationMap.setRelation(prevObj.id, extLayerObj.id, -1);
                 }else{
@@ -670,10 +679,29 @@ ConvertFca.prototype={
             layerObj=layers[i];
 
             if(layerObj.index==index){
-                //check prev and next
-                if( (this._relationMap.compareRelation(layerObj.prev,prev)!=1 && this._relationMap.compareRelation(layerObj.next,next)!=-1) ||
-                    (this._relationMap.compareRelation(layerObj.prev,prev)!=-1 && this._relationMap.compareRelation(layerObj.next,next)!=1)){
-                    return layerObj;
+
+                if(prev && next){
+                    //不在最前和最后
+                    //check prev and next
+                    if( (this._relationMap.compareRelation(layerObj.prev,prev)!=1 && this._relationMap.compareRelation(layerObj.next,next)!=-1) ||
+                        (this._relationMap.compareRelation(layerObj.prev,prev)!=-1 && this._relationMap.compareRelation(layerObj.next,next)!=1)){
+                        return layerObj;
+                    }
+                }else{
+                    //最前或最后
+                    if(!next){
+                        //当前元素在最后
+                        //查找元素在最后,或查找元素的next值在当前元素前面元素的后面
+                        if(!layerObj.next || this._relationMap.compareRelation(layerObj.next,prev)==1){ next>prev
+                            return layerObj;
+                        }
+                    }else if(!prev){
+                        //当前元素在最前
+                        //查找元素在最后,或查找元素的next值在当前元素前面元素的后面
+                        if(!layerObj.prev || this._relationMap.compareRelation(layerObj.prev,next)==-1){ prev<next
+                            return layerObj;
+                        }
+                    }
                 }
             }
         }
