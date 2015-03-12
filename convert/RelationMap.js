@@ -76,8 +76,12 @@ RelationMap.prototype= {
             return result;
         }
 
+        var closes={};
+
         //递推查表,从A搜索到b
         var befores = this._getBeforeItems(a), afters = this._getAfterItems(a);
+
+        closes[a]=true;
 
         //搜索前向,即向a的后面元素(底层级)
         while (befores.length) {
@@ -85,18 +89,40 @@ RelationMap.prototype= {
             if (c == b) {
                 return -1;
             }
-            befores = befores.concat(this._getBeforeItems(c));
+            if(!closes[c]){
+                befores = this.uniqueConcat(befores,this._getBeforeItems(c));//befores.concat(this._getBeforeItems(c));
+                closes[c]=true;
+            }
         }
+
+        closes={};
+        closes[a]=true;
 
         while (afters.length) {
             var c = afters.pop();
             if (c == b) {
                 return 1;
             }
-            afters = afters.concat(this._getAfterItems(c));
+            if(!closes[c]){
+                afters = this.uniqueConcat(afters,this._getAfterItems(c));//afters.concat(this._getAfterItems(c));
+                closes[c]=true;
+            }
         }
         //搜索不到。a和b没有关系
         return 0;
+    },
+
+    uniqueConcat:function(a,b){
+        for(var i in b){
+            if(a.indexOf(b[i])==-1) {
+                a.push(b[i]);
+            }
+//            else{
+//                console.log("fix",b[i]);
+//            }
+        }
+
+        return a;
     },
 
     clear:function(){
