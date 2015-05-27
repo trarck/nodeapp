@@ -109,7 +109,7 @@ function changeName(content){
 	//console.log(ret,map);
 
 	for(var k in map){
-		content=content.replace(new RegExp(k, 'g'),map[k]);
+		content=content.replace(new RegExp("([^a-zA-Z])"+k, 'g'),"$1"+map[k]);
 	}
 	
 	//console.log(content);
