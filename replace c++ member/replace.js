@@ -20,7 +20,7 @@ var opts= [
    }
 ];
 
-var regEx=/_([nlcfdbspt][A-Z]\w*)/g;
+var regEx=/_([nlucfdbspt][A-Z]\w*)/g;
 
 var result=ArgParser.parse(opts);
 
