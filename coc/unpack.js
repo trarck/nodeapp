@@ -8,6 +8,9 @@ var mkdirs=yhnode.filesystem.Path.mkdirs;
 var Task=yhnode.async.Task;
 var WorkPool=yhnode.async.WorkPool;
 
+/**
+ * ²Î¿¼ github.com:clanner/cocdp.git
+ */
 var opts= [
    { 
 	   full: 'src', 
