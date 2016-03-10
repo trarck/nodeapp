@@ -21,6 +21,6 @@
 "LighningSpell",500,,,,,"Spell_lightning_effect",650,-60,,,,,,,"true",,,,,,,,,,,,,,,
 "SpearGoblinProjectile",350,"sc/effects.sc","projectile_spear_360","projectile_arrow_shadow","true","spear_goblin_projectile_hit",24,,,,,,,,"true",,,150,,,,,,,,,,,,"true"
 "ice_wizardProjectile",700,"sc/effects.sc","ice_wizard_projectile",,"true","ice_wizard_hit",60,,,1000,,"true","true",,"true",,,50,,,,,,"IceWizardSlowDown",2000,,"ice_wiz_emitter",,,
-"RoyalGiantProjectile",1000,"sc/effects.sc","projectile_cannonball_large","projectile_arrow_shadow","true","royal_giant_projectile_hit",60,,,,,,,,"true",,,,,,,,,,,,,,,
-"PrincessProjectile",400,"sc/effects.sc","projectile_princess","projectile_arrow_shadow",,"PrincessArrowHitGround",150,,,2500,,"true","true",,"true",,,90,,,,,,,,,"PrincessArrowProjectileEmitter",,,
+"RoyalGiantProjectile",1000,"sc/effects.sc","projectile_cannonball_large","projectile_arrow_shadow","true","royal_giant_projectile_hit",65,,,,,,,,"true",,,,,,,,,,,,,,,
+"PrincessProjectile",400,"sc/effects.sc","projectile_princess","projectile_arrow_shadow",,"PrincessArrowHitGround",140,,,2500,,"true","true",,"true",,,90,,,,,,,,,"PrincessArrowProjectileEmitter",,,
 "PrincessProjectileDeco",400,"sc/effects.sc","projectile_princess","projectile_arrow_shadow",,"PrincessArrowHitGround",,,,,,,,,"true",,,90,,,,,,,,,"PrincessArrowProjectileEmitter",,,

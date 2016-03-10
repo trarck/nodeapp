@@ -3,6 +3,6 @@
 "Rage",,,,,,,,,,,135,135,135,,,,,,,,"Spell_rage_hit_effect","sc/effects.sc","filter_rage",,,,"Healing"
 "Flaming",,,,,,25,"Fire",,,"TRUE",,,,,,,,,,,"Burner","sc/effects.sc","filter_burn",,,,
 "Freeze",,,,,,,,,,"TRUE",-100,-100,-100,,,,,,,,,"sc/effects.sc","filter_cold",,,,
-"Poison",,,,,-60,45,,,,"TRUE",-20,-20,-20,,,,,,,,"PoisonSteam","sc/effects.sc","filter_poison",,,,
+"Poison",,,,,-60,40,,,,"TRUE",-20,-20,-20,,,,,,,,"PoisonSteam","sc/effects.sc","filter_poison",,,,
 "IceWizardSlowDown",,,,,,,,,,,-35,-35,-35,,,,,,,,,"sc/effects.sc","filter_cold",,,,"Healing"
 "ZapFreeze",,,,,,,,,,"TRUE",-100,-100,-100,,,,,,,,,"sc/effects.sc","filter_cold",,,,

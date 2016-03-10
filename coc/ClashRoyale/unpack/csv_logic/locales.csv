@@ -13,9 +13,9 @@
 "JP","TRUE",,"TRUE","HiraKakuProN-W6","ja","http://supercell.com/en/terms-of-service/jp","http://www.supercell.com/en/parents/jp","http://www.supercell.com/en/privacy-policy/jp",,13,,,"csv_client/sorted_regions/JP_regions.csv"
 "KR","TRUE",,"TRUE",,"ko","http://supercell.com/en/terms-of-service/ko","http://www.supercell.com/en/parents/ko","http://www.supercell.com/en/privacy-policy/ko",,14,,,"csv_client/sorted_regions/KR_regions.csv"
 "RU","TRUE",,,,"ru","http://supercell.com/en/terms-of-service/ru","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/ru",,10,,,
-"TEXT","TRUE","Longest text",,,"zh-hans","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_CN",1000,"TRUE","AR",
-"WORD","TRUE","Longest word",,,"cn","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_TW",1001,"TRUE","AR",
-"DOUBLE","TRUE","Double String",,,"zh-Hans","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_CN",1002,"TRUE",,
-"EMPTY","TRUE","Empty texts",,,"ko","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","ko",1003,"TRUE",,
+"TEXT","FALSE","Longest text",,,"zh-hans","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_CN",1000,"TRUE","AR",
+"WORD","FALSE","Longest word",,,"cn","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_TW",1001,"TRUE","AR",
+"DOUBLE","FALSE","Double String",,,"zh-Hans","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","zh_CN",1002,"TRUE",,
+"EMPTY","FALSE","Empty texts",,,"ko","http://supercell.com/en/terms-of-service/","http://www.supercell.com/en/parents/","http://www.supercell.com/en/privacy-policy/","ko",1003,"TRUE",,
 "CNT","TRUE",,"TRUE","STHeitiSC-Medium","zh-Hant","http://supercell.com/en/terms-of-service/cn","http://www.supercell.com/en/parents/cn","http://www.supercell.com/en/privacy-policy/cn","zh_TW",12,,,"csv_client/sorted_regions/CNT_regions.csv"
 "AR","TRUE",,,,,,,,,15,,,
