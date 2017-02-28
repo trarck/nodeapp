@@ -1,4 +1,5 @@
 temp
+*.pyc
 VideoDownload/youku/player
 VideoDownload/youku/vedio
 /node_modules
@@ -27,3 +28,5 @@ dtcq/1.8
 dtcq/apps
 /convert/.idea
 
+
+/cocosxxtea/tmp
