@@ -1,0 +1,303 @@
+_G.TEST = false
+
+require("Config")
+
+function enableGC()
+	collectgarbage("collect")
+	collectgarbage("setpause", 100)
+	collectgarbage("setstepmul", 5000)
+
+	return 
+end
+
+function disableGC()
+	collectgarbage("stop")
+
+	return 
+end
+
+function clearMyRequire()
+	for _, file in pairs(_G.myRequire) do
+		package.loaded[file] = false
+	end
+
+	_G.myRequire = nil
+	_G.gameScene = nil
+	local search_paths = cc.FileUtils:getInstance():getSearchPaths()
+
+	for index, search_path in pairs(search_paths) do
+		if search_path == cc.FileUtils:getInstance():getWritablePath() .. "update_res/res/" then
+			table.remove(search_paths, index)
+
+			break
+		end
+	end
+
+	cc.FileUtils:getInstance():setSearchPaths(search_paths)
+
+	return 
+end
+
+function reloadLuaFile(target)
+	package.loaded[target] = false
+
+	require(target)
+
+	return 
+end
+
+function showImportantBoard()
+	_G.myRequire = {}
+
+	local function myRequire(file)
+		require(file)
+		table.insert(_G.myRequire, file)
+
+		return 
+	end
+
+	_G.gameScene = true
+	local needFires = {
+		"game/ui/form/login/UIOutBoard",
+		"game/ui/form/setting/UIGameBoard",
+		"game/logic/module/GameBoardM",
+		"game/ui/base/util/ScrollTool",
+		"game/ui/base/util/Text",
+		"game/ui/base/TextStyleM",
+		"game/ui/base/util/Node",
+		"game/ui/base/util/ScrollTool",
+		"game/ui/UIConsts",
+		"game/loc/localization",
+		"game/ui/misc/UIIndicator",
+		"core/base/Table",
+		"game/ui/base/AlignM",
+		"game/scene/FormEffectM",
+		"game/logic/module/TimeM"
+	}
+
+	for _, file in pairs(needFires) do
+		myRequire(file)
+	end
+
+	local scene = require("game/scene/BoardScene")
+
+	table.insert(_G.myRequire, "game/scene/BoardScene")
+	table.insert(_G.myRequire, "game/scene/SceneBase")
+	table.insert(_G.myRequire, "Main")
+
+	_G.gameScene = scene
+	local gameScene = scene.create()
+	_G.gameScene = gameScene
+
+	if cc.Director:getInstance():getRunningScene() then
+		cc.Director:getInstance():replaceScene(gameScene)
+	else
+		cc.Director:getInstance():runWithScene(gameScene)
+	end
+
+	return 
+end
+
+function checkImportantBoard()
+	require("game/logic/module/UserProtocolM")
+
+	if UserProtocolM.needReadUserProtocol() then
+		return true
+	end
+
+	if _G.outBoard and not _G.hasShowBoard then
+		return true
+	end
+
+	return false
+end
+
+function preloadMain()
+	if LUA_COVERAGE == 1 then
+		_G.luaRunner = require("luacov.luacov")
+	end
+
+	require("cocos/init")
+	require("core/StartCore")
+	require("game/StartGame")
+	require("core/base/UserDefaultM")
+	require("game/base/commonUtil")
+	require("game/base/options")
+	require("game/loc/localization")
+	require("game/ui/base/util")
+	require("game/ui/UIMgr")
+
+	if DEBUG_MODE == 1 then
+		require("UnitTest")
+		require("StressTest")
+	end
+
+	reloadLuaFile("core.base.Debug")
+
+	if DEBUG_MODE ~= 1 then
+		Profiler.funcBegin = function ()
+			return 
+		end
+		Profiler.funcEnd = function ()
+			return 
+		end
+	end
+
+	disableGC()
+	printLuaMemSize("main")
+	Profiler.funcBegin("main")
+
+	if not cc.FileUtils:getInstance():isFileExist(getLocFontName()) then
+		if getLang() == "tw" then
+			cc.UserDefault:getInstance():setStringForKey("lang_tw", "0")
+		end
+
+		setLang("en")
+		initLang()
+	end
+
+	startCore()
+	printLuaMemSize("after startCore")
+	startGame()
+	EventMgr.fire(event.PRELOAD_MAIN_OK)
+	printLuaMemSize("after startGame")
+	enableGC()
+	Profiler.funcEnd("main")
+	printLuaMemSize("after enableGC")
+
+	return 
+end
+
+local function main()
+	if checkImportantBoard() then
+		return 
+	end
+
+	preloadMain()
+
+	return 
+end
+
+main()
+
+function applicationDidEnterBackground()
+	print("enter background")
+
+	local scene = cc.Director:getInstance():getRunningScene()
+
+	if scene and scene.getName(scene) == "BoardScene" then
+		return 
+	end
+
+	showPauseForm()
+
+	if not HeartBeatM then
+		return 
+	end
+
+	HeartBeatM.stop()
+	ScheduleM.pause()
+	AutoFightM.pause()
+
+	if isAndroidPlatform() or isIphonePlatform() or isIpadPlatform() then
+		setLocalPush()
+	end
+
+	return 
+end
+
+appEnterForegroundTime = 0
+
+function applicationWillEnterForeground()
+	print("enter foreground")
+
+	appEnterForegroundTime = os.time()
+	local scene = cc.Director:getInstance():getRunningScene()
+
+	if scene and scene.getName(scene) == "BoardScene" then
+		return 
+	end
+
+	hidePauseForm()
+
+	if not HeartBeatM then
+		return 
+	end
+
+	ScheduleM.resume()
+	AudioM.setDefaultVolume()
+	HeartBeatM.start()
+
+	if isWindowsPlatform() then
+		AutoFightM.continue()
+	end
+
+	if isAndroidPlatform() or isIphonePlatform() or isIpadPlatform() then
+		clearLocalPush()
+	end
+
+	if MarketM.isRecharging() then
+		MarketM.setRechargingFlag(false)
+	end
+
+	TimeM.sync()
+
+	return 
+end
+
+function applicationScreenSizeChanged(width, height)
+	print("[lua]applicationScreenSizeChanged, width:" .. width .. ",height:" .. height)
+
+	local oldSize = cc.Director:getInstance():getOpenGLView():getFrameSize()
+
+	if oldSize.width ~= width or oldSize.height ~= height then
+		print("applicationScreenSizeChanged, width:" .. width .. ",height:" .. height)
+
+		local size = cc.Director:getInstance():getOpenGLView():getDesignResolutionSize()
+
+		cc.Director:getInstance():getOpenGLView():setFrameSize(width, height)
+		cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(size.width, size.height, 0)
+		cc.Director:getInstance():setViewport()
+	end
+
+	return 
+end
+
+function onBackEvent()
+	print("back event")
+	UIMgr.handleBackEvent()
+
+	return 
+end
+
+function onFileMissing(filename)
+	printR("onFileMissing:" .. filename)
+
+	local function callback()
+		return 
+	end
+
+	if MISSING_FILE_URL then
+		postDataToRemoteHost(MISSING_FILE_URL, filename, callback)
+	end
+
+	return 
+end
+
+function openGdUI()
+	local curFormName = UIMgr.getCurrentScene():getCurrentForm():getName()
+
+	if curFormName == "UIDungeonMain" or curFormName == "UINewWorkshop" then
+		return 
+	end
+
+	require("game/ui/form/setting/UIGD")
+
+	local uiGd = UIGD.create()
+
+	UIMgr.getCurrentScene():addForm(uiGd)
+
+	return 
+end
+
+return 
