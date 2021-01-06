@@ -1,6 +1,11 @@
 var fs=require('fs')
 var path=require('path')
 
+var yhnode=require("yhnode");
+
+var Task=yhnode.async.Task;
+var WorkPool=yhnode.async.WorkPool;
+
 function IndexFile(){
     
 }
@@ -51,7 +56,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
     var entries=[]
     for(var i=0;i<entryLen;++i){
         var entry={};
-        
+        entry.index=i;
         entry.key=bytesToHex(cnt,offset,9);
         offset+=9;
         var h=cnt.readUInt8(offset);
@@ -59,7 +64,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
         var l=cnt.readUInt32BE(offset);
         offset+=4;
         
-        entry.index= h << 2 | ( (l& 0xC0000000) >>> 30);
+        entry.dataIndex= h << 2 | ( (l& 0xC0000000) >>> 30);
         entry.offset=l & 0x3FFFFFFF;
         entry.size = cnt.readUInt32LE(offset);
         offset+=4;
@@ -83,6 +88,54 @@ IndexFile.getFileName=function(idxInfo){
     return byteToHex(idxInfo.type)+intToHex(idxInfo.version);
 }
 
+IndexFile.getIdxFiles=function (idxDir){
+    var files=fs.readdirSync(idxDir);
+	
+	var filename;
+	var srcFile;
+	var stat;
+    var idxs={};
+	for(var i in files){
+		filename=files[i];
+		if (filename!="." && filename!=".."){
+			srcFile= path.join(idxDir,filename);
+			stat=fs.statSync(srcFile);
+			if (stat.isFile() && path.extname(filename)==".idx") {
+				var idxInfo = IndexFile.getIdxInfo(srcFile);	
+                if(!idxs[idxInfo.type]){
+                    idxs[idxInfo.type]=[];
+                }
+                idxs[idxInfo.type].push(idxInfo);
+			}
+		}
+	}
+    return idxs;
+}
+
+IndexFile.loadIdxEntries= function (idxInfo){
+    if(!idxInfo.entries){
+        console.log("load idx entries of",IndexFile.getFileName(idxInfo));
+        idxInfo.entries=IndexFile.readIdxEntiesFromFile(idxInfo.file);
+    }
+}
+
+IndexFile.loadAllIdxVersionEntries=function (idxInfos){
+    for(var i in idxInfos){
+        IndexFile.loadIdxEntries(idxInfos[i]);
+    }
+}
+
+IndexFile.sortIdxByVersionAsc=function (a,b){
+    return a.version-b.version;
+}
+
+IndexFile.sortIdxEntries=function (a,b){
+    var r=a.dataIndex-b.dataIndex;
+    if(r==0){
+        r= a.offset-b.offset;
+    }
+    return r;
+}
 
 function intToHex(v){
     return byteToHex(v>>24)+byteToHex((v&0xFF0000) >>16)+byteToHex((v&0xFF00) >>8)+byteToHex(v&0xFF);
