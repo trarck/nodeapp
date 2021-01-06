@@ -1,4 +1,5 @@
 var fs=require('fs')
+var path=require('path')
 
 function IndexFile(){
     
@@ -59,7 +60,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
         offset+=4;
         
         entry.index= h << 2 | ( (l& 0xC0000000) >>> 30);
-        entry.offet=l & 0x3FFFFFFF;
+        entry.offset=l & 0x3FFFFFFF;
         entry.size = cnt.readUInt32LE(offset);
         offset+=4;
         entries.push(entry);
@@ -69,6 +70,22 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
         console.log("the entries length not match need="+entryLen+",read="+entries.length);
     }
     return entries;
+}
+
+IndexFile.getIdxInfo=function(filePath){
+    var nameWithOutExt=path.basename(filePath,path.extname(filePath));
+    var type=parseInt(nameWithOutExt.substr(0,2),16);
+    var version = parseInt(nameWithOutExt.substr(2),16);
+    return {type:type,version:version,file:filePath};
+}
+
+IndexFile.getFileName=function(idxInfo){
+    return byteToHex(idxInfo.type)+intToHex(idxInfo.version);
+}
+
+
+function intToHex(v){
+    return byteToHex(v>>24)+byteToHex((v&0xFF0000) >>16)+byteToHex((v&0xFF00) >>8)+byteToHex(v&0xFF);
 }
 
 function bytesToHex(buff,offset,length){
