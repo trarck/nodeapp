@@ -12,8 +12,7 @@ function Csv(options){
     if(!this.options.bufferSize){
         this.options.bufferSize = 1024*1024;
     }
-    this.line = 0;
-    this.lineOffset = 0;
+    this.line = -1;
 }
 
 Csv.prototype.createHeader=function(data){
@@ -50,6 +49,12 @@ Csv.prototype.resizeBuffer=function(){
     this.buffer=newBuffer;
 }
 
+Csv.prototype.resetBuffer=function(){
+    this.bufferLength=0;
+    this.checkPositon=0;
+    this.lineStartPosition=0;
+}
+
 Csv.prototype.readBuffer=function(){
     //检查buffer是否能容纳读取字节数
     if(this.buffer.length-this.bufferLength<this.readSize){
@@ -59,14 +64,20 @@ Csv.prototype.readBuffer=function(){
     
     var readLen = fs.readSync(this.fp,this.buffer,this.bufferLength,this.readSize);
     this.bufferLength += readLen;
-    return readLen > 0;
+    return readLen;
 }
 
-Csv.prototype.parseBuffer=function(startLine,endLine){
+Csv.prototype.parseBuffer=function(rows,startLine,endLine){
     while(this.checkPositon<this.bufferLength){
         var c = this.buffer[this.checkPositon];
         if(c == LF ){
-            if(this.line >= this.lineStart){              
+            ++this.line;
+            
+            if(endLine>0 && this.line>=endLine){
+                return;
+            }
+            
+            if(this.line >= startLine){              
                 var BackPos = 0;
                 
                 if(this.checkPositon>0){
@@ -83,8 +94,7 @@ Csv.prototype.parseBuffer=function(startLine,endLine){
                     }
                 }
             }
-            
-            ++this.line;
+
             //next char
             this.lineStartPosition = this.checkPositon + 1;
             //继续检查
@@ -106,6 +116,23 @@ Csv.prototype.parseBuffer=function(startLine,endLine){
     }
 }
 
+Csv.prototype.parseLastBuffer=function(rows,startLine,endLine){
+    if(this.bufferLength > 0){
+        ++this.line;
+        if(endLine>0 && this.line>=endLine){
+            return;
+        }
+        if(this.line >= startLine){
+            var line = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon);
+            if(line){
+                var rowData = this.parseLine(line);
+                if(rows){
+                    rows.push(rowData);
+                }
+            }
+        }
+    }
+}
 
 Csv.prototype.parseLine=function(line){
     var values = line.split(this.delimiter);
@@ -129,205 +156,38 @@ Csv.prototype.parseLine=function(line){
 }
 
 Csv.prototype.readLines=function(start,end){
+    var rows=[];
     
-    while(this.line>=start && this.line<end && this.readBuffer()){
-        
+    if(this.bufferLength>0){
+        this.parseBuffer(rows,start,end);
     }
     
-    while(this.checkPositon<this.bufferLength){
-        var c = this.buffer[this.checkPositon];
-        if(c == LF ){
-            if(this.line >= this.lineStart){              
-                var BackPos = 0;
-                
-                if(this.checkPositon>0){
-                    if(this.buffer[this.checkPositon-1]== CR ){
-                        BackPos+=1;
-                    }
-                }
-      
-                var lineStr = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon-BackPos);
-                if(lineStr){
-                    var rowData = this.parseLine(lineStr);
-                    if(rows){
-                        rows.push(rowData);
-                    }
-                }
-            }
-            
-            ++this.line;
-            //next char
-            this.lineStartPosition = this.checkPositon + 1;
-            //继续检查
+    while(this.line>=start && (end<=0 || this.line<end)){
+        if(this.readBuffer()==0){
+            //eof
+            this.parseLastBuffer(rows,start,end);
+            break;
+        }else{
+            this.parseBuffer(rows,start,end);
         }
-        ++this.checkPositon;
     }
-    
-    //移除检查过的行。
-    if(this.lineStartPosition < this.bufferLength){
-        this.buffer.copy(this.buffer,0,this.lineStartPosition,this.bufferLength);
-        this.bufferLength -= this.lineStartPosition;
-        this.lineStartPosition = 0;
-        this.checkPositon = this.bufferLength;
-    }else{
-        // empty
-        this.bufferLength = 0;
-        this.checkPositon = 0;
-        this.lineStartPosition = 0;
-    }
-    return true
-}
-
-Csv.prototype.readRows=function(rows){
-    //检查buffer是否能容纳读取字节数
-    if(this.buffer.length-this.bufferLength<this.readSize){
-        console.log("then buffer size will full.")
-        this.resizeBuffer();
-    }
-    
-    var readLen = fs.readSync(this.fp,this.buffer,this.bufferLength,this.readSize);
-    if(readLen == 0){
-        if(this.bufferLength > 0){
-            var line = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon);
-            if(line){
-                var rowData = this.parseLine(line);
-                if(rows){
-                    rows.push(rowData);
-                }
-            }
-        }
-        
-        return false;
-    }
-    
-    this.bufferLength += readLen;
-    
-    while(this.checkPositon<this.bufferLength){
-        var c = this.buffer[this.checkPositon];
-        if(c == LF ){
-            if(this.line >= this.lineStart){              
-                var BackPos = 0;
-                
-                if(this.checkPositon>0){
-                    if(this.buffer[this.checkPositon-1]== CR ){
-                        BackPos+=1;
-                    }
-                }
-      
-                var lineStr = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon-BackPos);
-                if(lineStr){
-                    var rowData = this.parseLine(lineStr);
-                    if(rows){
-                        rows.push(rowData);
-                    }
-                }
-            }
-            
-            ++this.line;
-            //next char
-            this.lineStartPosition = this.checkPositon + 1;
-            //继续检查
-        }
-        ++this.checkPositon;
-    }
-    
-    //移除检查过的行。
-    if(this.lineStartPosition < this.bufferLength){
-        this.buffer.copy(this.buffer,0,this.lineStartPosition,this.bufferLength);
-        this.bufferLength -= this.lineStartPosition;
-        this.lineStartPosition = 0;
-        this.checkPositon = this.bufferLength;
-    }else{
-        // empty
-        this.bufferLength = 0;
-        this.checkPositon = 0;
-        this.lineStartPosition = 0;
-    }
-    return true
-}
-
-Csv.prototype.readLines2=function(start,end){
-    //检查buffer是否能容纳读取字节数
-    if(this.buffer.length-this.bufferLength<this.readSize){
-        console.log("then buffer size will full.")
-        this.resizeBuffer();
-    }
-    
-    var readLen = fs.readSync(this.fp,this.buffer,this.bufferLength,this.readSize);
-    if(readLen == 0){
-        if(this.bufferLength > 0){
-            var line = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon);
-            if(line){
-                var rowData = this.parseLine(line);
-                if(rows){
-                    rows.push(rowData);
-                }
-            }
-        }
-        
-        return false;
-    }
-    
-    this.bufferLength += readLen;
-    
-    while(this.checkPositon<this.bufferLength){
-        var c = this.buffer[this.checkPositon];
-        if(c == LF ){
-            if(this.line >= this.lineStart){              
-                var BackPos = 0;
-                
-                if(this.checkPositon>0){
-                    if(this.buffer[this.checkPositon-1]== CR ){
-                        BackPos+=1;
-                    }
-                }
-      
-                var lineStr = this.buffer.toString(this.encoding,this.lineStartPosition,this.checkPositon-BackPos);
-                if(lineStr){
-                    var rowData = this.parseLine(lineStr);
-                    if(rows){
-                        rows.push(rowData);
-                    }
-                }
-            }
-            
-            ++this.line;
-            //next char
-            this.lineStartPosition = this.checkPositon + 1;
-            //继续检查
-        }
-        ++this.checkPositon;
-    }
-    
-    //移除检查过的行。
-    if(this.lineStartPosition < this.bufferLength){
-        this.buffer.copy(this.buffer,0,this.lineStartPosition,this.bufferLength);
-        this.bufferLength -= this.lineStartPosition;
-        this.lineStartPosition = 0;
-        this.checkPositon = this.bufferLength;
-    }else{
-        // empty
-        this.bufferLength = 0;
-        this.checkPositon = 0;
-        this.lineStartPosition = 0;
-    }
-    return true
-}
-
-Csv.prototype.read=function(row,length){
-    this.line = 0;
-    this.createBuffer();
-    this.readLine(rows);
+    return rows;
 }
 
 Csv.prototype.readAll=function(filePath){
     var rows=[];
     this.open(filePath,"r+");
     try{
-        this.line = 0;
+        this.line = -1;
         this.createBuffer();
-        while(this.readRows(rows)){
-            
+        while(true){
+            if(this.readBuffer()==0){
+                //eof
+                this.parseLastBuffer(rows,0,-1);
+                break;
+            }else{
+                this.parseBuffer(rows,0,-1);
+            }
         }
     }catch(e){
        throw e; 
@@ -371,9 +231,3 @@ Csv.prototype.writeAll=function(filePath,arr){
 }
 
 module.exports=Csv;
-
-
-var csv=new Csv({header:[{name:"a"},{name:"b"},{name:"c"}]});
-var d=csv.readAll("t.csv");
-console.log(d);
-csv.writeAll("t1.csv",d);
