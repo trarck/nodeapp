@@ -230,4 +230,9 @@ Csv.prototype.writeAll=function(filePath,arr){
     }
 }
 
+Csv.writeAll=function(filePath,arr,header){
+    var csv=new Csv({header:header});
+    csv.writeAll(filePath,arr);
+}
+
 module.exports=Csv;
