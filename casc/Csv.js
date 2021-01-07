@@ -136,7 +136,7 @@ Csv.prototype.parseLastBuffer=function(rows,startLine,endLine){
 
 Csv.prototype.parseLine=function(line){
     var values = line.split(this.delimiter);
-    console.log(values);
+    //console.log(values);
     var data={};
     for(var i=0;i<this.header.length && i< values.length;++i){
         var col=this.header[i];
@@ -149,7 +149,7 @@ Csv.prototype.parseLine=function(line){
                 v=parseFloat(v);
                 break;
         }
-        console.log(col.name,v);
+        //console.log(col.name,v);
         data[col.name]=v;
     }
     return data;
