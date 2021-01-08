@@ -23,7 +23,7 @@ var opts= [
 	   defaultValue:""
    }, 
    { 
-	   full: 'startVersion', 
+	   full: 'startVersion',
 	   abbr: 'sv',
 	   defaultValue:1
    }, 
@@ -62,23 +62,20 @@ var endVersion=result.options.endVersion || maxVersion;
 exportVersionData(startVersion,endVersion);
 
 function exportVersionData(startVersion,endVersion){
-    for(var i=startVersion;i<endVersion;++i){
+    for(var i=startVersion;i<=endVersion;++i){
         var sameVersionIdxs=getVersionIdxs(i,idxGroup);
+        fixIdxEntries(sameVersionIdxs);
         exportVersionEntries(i,sameVersionIdxs);
     }
 }
 
-
-function exportVersionEntries(version,idxs){
-    console.log("export version "+version+" entries");
-    var sameVersionEntries=[];
+function fixIdxEntries(idxs){
     for(var i in idxs){
-        sameVersionEntries=sameVersionEntries.concat(idxs[i].entries);
-    } 
-    
-    sameVersionEntries.sort(IndexFile.sortIdxEntries);
-    var versionPath=path.join(outPath,version+".csv");
-    Csv.writeAll(versionPath,sameVersionEntries);
+        for(var j in idxs[i].entries){
+            idxs[i].entries[j].idx = idxs[i].type;
+            idxs[i].entries[j].end = idxs[i].entries[j].offset+idxs[i].entries[j].size;
+        }
+    }
 }
 
 function getVersionIdxs(version,idxGroup){
@@ -92,4 +89,16 @@ function getVersionIdxs(version,idxGroup){
         sameVersionIdxs.push(idxs[version-1]);
     }
     return sameVersionIdxs;
+}
+
+function exportVersionEntries(version,idxs){
+    console.log("export version "+version+" entries");
+    var sameVersionEntries=[];
+    for(var i in idxs){
+        sameVersionEntries=sameVersionEntries.concat(idxs[i].entries);
+    } 
+    
+    sameVersionEntries.sort(IndexFile.sortIdxEntries);
+    var versionPath=path.join(outPath,version+".csv");
+    Csv.writeAll(versionPath,sameVersionEntries,["idx","index","key","dataIndex","offset","end","size"]);
 }

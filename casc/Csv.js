@@ -5,7 +5,7 @@ var LF=10;
 
 function Csv(options){
     this.options = options||{};
-    this.header = this.options.header;
+    this.header = this.formatHeader(this.options.header);
     this.delimiter = this.options.delimiter||",";
     this.encoding = this.options.encoding||"utf8";
     this.readSize =this.options.readSize||1024;
@@ -13,6 +13,24 @@ function Csv(options){
         this.options.bufferSize = 1024*1024;
     }
     this.line = -1;
+}
+
+Csv.prototype.formatHeader=function(header){
+    if(!header){
+        return header;
+    }
+    
+    var formated=[];
+    for(var i in header){
+        if(typeof(header[i]=="string")){
+            formated[i]={
+                name:header[i]
+            };
+        }else{
+            formated[i]=header[i];
+        }
+    }
+    return formated;
 }
 
 Csv.prototype.createHeader=function(data){
