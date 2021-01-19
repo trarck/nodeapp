@@ -8,6 +8,6 @@ client.onData=function(d){
 
 client.connect(function(){
     client.send("Hello world");
-    console.log("end");
+    
 });
 

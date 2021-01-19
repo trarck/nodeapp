@@ -28,18 +28,38 @@ TcpEchoServer.prototype.start=function(){
 
 TcpEchoServer.prototype.accept=function(socket){
     console.log("have a new connection");
-    socket.on("error",function(e){
-        console.log("connect error",e);            
-    })
+    var self=this;
+    var client={
+        socket:socket        
+    };
     
     socket.on("error",function(e){
         console.log("connect error",e);            
-    })
+    });
+    
+    socket.on("error",function(e){
+        console.log("connect error",e);            
+    });
+    
+    socket.on("close",function(){
+        console.log("clinet close");
+        if(self.onClientClose){
+            self.onClientClose(client);
+        }
+    });
     
     socket.on("data",function(data){
         console.log("recv client data:",data.toString());
         socket.write(data);
     });
+    
+    if(this.onClientConnect){
+        this.onClientConnect(client);
+    }
+}
+
+TcpEchoServer.prototype.onClientConnect=function(){
+    
 }
 
 module.exports = TcpEchoServer;
