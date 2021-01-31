@@ -1,0 +1,1 @@
+Export.exe -excelDir=../../excels -dataOutPath=../../data -exportInfo=info.json  -codeNamespace=VO -dataFormat=Json -headModel=Normal -templatePath=Templates

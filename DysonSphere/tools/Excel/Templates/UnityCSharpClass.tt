@@ -1,0 +1,85 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="TK.ExcelData" #>
+<#@ import namespace="TK.Excel" #>
+<#@ output extension=".cs" #>
+<#@ parameter  name="ns" type="System.String" #>
+<#@ parameter  name="side" type="TK.Excel.Side" #>
+<#@ parameter  name="schema" type="TK.Excel.Schema" #>
+using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+<# if(!string.IsNullOrEmpty(ns)) {#>
+namespace <#=ns#>
+{
+<# } #>
+<# if(schema!=null){ #>
+[Serializable]
+public class <#= schema.name #>
+{
+<# foreach(Field field in schema.GetSideFields(side)){ #>
+    /// <summary>
+    /// <#= GetFieldComment(field) #>
+    /// </summary>
+	public <#=GetFieldTypeDefine(field)#> <#=field.name#>;
+<# } #>
+}
+<# } #>
+<# if(!string.IsNullOrEmpty(ns)) {#>
+}
+<# } #>
+
+<#+ 
+ private string GetFieldComment(Field field)
+{
+            
+    string comment = "";
+
+    if (!string.IsNullOrEmpty(field.description))
+    {
+        comment = field.description;
+    }
+
+    if (!string.IsNullOrEmpty(field.comment))
+    {
+        if (string.IsNullOrEmpty(comment))
+        {
+            comment = field.comment;
+        }
+        else
+        {
+            comment +=  "\r\n" + field.comment;
+        }
+    }
+	return ParseLines(comment,"    " );
+}
+
+ private string GetFieldTypeDefine(Field field)
+{
+            
+    if (field.type.sign == TypeInfo.Sign.Array)
+    {
+        return "object[]";
+    }
+    else if (field.type.isGeneric && field.type.genericType.sign == TypeInfo.Sign.Array)
+    {
+        return field.type.genericArguments[0].ToString() + "[]";
+    }
+    return field.type.ToString();
+}
+
+
+string ParseLines(string str,string pad)
+{
+    string[] lines = str.Replace("\r\n", "\n").Split('\n');
+    string ret = lines[0];
+    for(int i = 1; i < lines.Length; ++i)
+    {
+        ret += "\r\n" +pad + "/// " + lines[i] ;
+    }
+    return ret;
+}
+#>
