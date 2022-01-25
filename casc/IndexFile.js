@@ -42,7 +42,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
         "eKeyLength="+eKeyLength,
         "fileOffsetBits="+fileOffsetBits,
         "segmentSize="+segmentSize);
-        */
+     */   
     //pad 8
     offset+=8;
 
@@ -51,7 +51,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
     var dataCheck = cnt.readUInt32LE(offset);
     offset+=4;
     
-    //console.log(dataLength,dataCheck,dataLength/18);
+    console.log(idxFile,dataLength,dataCheck,dataLength/18);
     var entryLen=dataLength/18;
     var entries=[]
     for(var i=0;i<entryLen;++i){
@@ -70,7 +70,7 @@ IndexFile.readIdxEntiesFromFile=function(idxFile){
         offset+=4;
         entries.push(entry);
     }
-    
+    console.log("offset="+offset);
     if(entries.length!=entryLen){
         console.log("the entries length not match need="+entryLen+",read="+entries.length);
     }

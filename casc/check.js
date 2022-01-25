@@ -49,7 +49,8 @@ function checkDuplicate(idxGroup){
             var idxInfo=idxGroup[i][j];
             var dups = getVersionDuplicate(idxInfo);
             if(dups && dups.length>0){
-                var dupFileName=IndexFile.getFileName(idxInfo)+".csv";
+                var dupFileName=IndexFile.getFileName(idxInfo)+".dups.csv";
+                
                 Csv.writeAll(path.join(outPath,dupFileName),dups);
             }
         }
@@ -67,7 +68,7 @@ function checkSameIdxVersion(idxs){
         //console.log("check",idxs[i].type,idxs[i].version,idxs[i+1].version);
         var diff=diffIdxVersion(idxs[i],idxs[i+1]);
         if(diff.updates.length>0){
-            //console.log("updates ",diff.updates.length,idxs[i].type,idxs[i].version,idxs[i+1].version);
+            console.log("updates ",diff.updates.length,idxs[i].type,idxs[i].version,idxs[i+1].version);
             var updates=[]
             for(var k in diff.updates){
                 var u={
@@ -96,6 +97,14 @@ function checkSameIdxVersion(idxs){
             var removeFileName=fromIdxName+"--"+toIdxName+".removes.csv";
             Csv.writeAll(path.join(outPath,removeFileName),diff.removes);
         }
+        
+        if(diff.adds.length>0){
+            //console.log("remove ",diff.removes.length,idxs[i].type,idxs[i].version,idxs[i+1].version);
+            var fromIdxName=IndexFile.getFileName(idxs[i]);
+            var toIdxName=IndexFile.getFileName(idxs[i+1]);
+            var removeFileName=fromIdxName+"--"+toIdxName+".adds.csv";
+            Csv.writeAll(path.join(outPath,removeFileName),diff.adds);
+        }
     }
 }
 
@@ -117,7 +126,6 @@ function diffIdxVersion(verA,verB){
        
     for(var i in verB.entries){
         var entry=verB.entries[i];
-        
         if(!aEntries[entry.key]){
             adds.push(entry);
         }else{
@@ -125,6 +133,7 @@ function diffIdxVersion(verA,verB){
             if(aEntry.dataIndex == entry.dataIndex && aEntry.offset == entry.offset && aEntry.size == entry.size){
                 //sames
             }else{
+                
                 updates.push({from:aEntry,to:entry});
             }
             keys[entry.key]=false;
