@@ -191,6 +191,15 @@ function analyzeIdx(entries){
 
 function outCsvData(filePath,arr){
     var cnt="";
+	//write head
+	for(var i in arr){
+        for(var k in arr[i]){
+            cnt+=k+","
+        }
+        cnt+="\n";
+		break;
+    }
+	
     for(var i in arr){
         for(var k in arr[i]){
             cnt+=arr[i][k]+","

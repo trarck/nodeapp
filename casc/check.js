@@ -40,6 +40,8 @@ switch(action){
         checkIdxVersion(idxGroup);
         checkDuplicate(idxGroup);
         break;
+	case "checkData":
+		checkDataIndex(idxGroup);
 }
 
 
@@ -167,4 +169,50 @@ function getVersionDuplicate(idxInfo){
         }
     }
     return dups;
+}
+
+function checkDataIndex(idxGroup){
+	var entryDataIndex={}
+	var diffEntries=[]
+	for(var i in idxGroup){
+        getEntryDataIndex(idxGroup[i],entryDataIndex)
+    }
+	for(key in entryDataIndex){
+		if(!isAllDataIndexSame(entryDataIndex[key])){
+			for(var i in entryDataIndex[key]){
+				diffEntries.push(entryDataIndex[key][i])
+			}
+		}
+	}
+	
+	if(diffEntries && diffEntries.length>0){
+		var dupFileName="diff.csv";
+		
+		Csv.writeAll(path.join(outPath,dupFileName),diffEntries);
+	}
+	else{
+		console.log("no diff");
+	}
+}
+
+function getEntryDataIndex(idxInfo,data){
+    for(var i in idxInfo.entries){
+        var entry=idxInfo.entries[i];
+        if(!data[entry.key]){
+            data[entry.key]=[];
+        }
+        data[entry.key].push(entry);
+    }
+}
+
+function isAllDataIndexSame(arr){
+	if(arr.length>1){
+		var first=arr[0];
+		for(var i=1;i<arr.length;++i){
+			if(first.dataIndex!=arr[i].dataIndex){
+				return false;
+			}
+		}
+	}
+	return true;
 }

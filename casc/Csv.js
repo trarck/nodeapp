@@ -226,7 +226,7 @@ Csv.prototype.write=function(data){
         if(i>0){
             fs.writeSync(this.fp,this.delimiter);
         }
-        fs.writeSync(this.fp,data[colName]);
+        fs.writeSync(this.fp,data[colName].toString());
     }
     fs.writeSync(this.fp,"\n");
 }
